@@ -9,14 +9,15 @@ Step 3 — Output filtered stock list as docs/results.json
 No entry / SL / targets. Just the curated stock list.
 
 Filters (each scored 0-2, max 10):
-  F1  Inside CPR confirmed (from source list) + Narrow CPR width < 0.3%
+  F1  Inside CPR confirmed + Narrow CPR width < 0.3%
   F2  ATR contraction: today ATR / 10d avg ATR < 0.75
   F3  CPR-to-R1 or CPR-to-S1 distance >= 1x ATR (room to move)
-  F4  Daily SMA alignment: 20/50/200 all stacked bullish or bearish
-  F5  1H SMA alignment + price above/below weekly CPR
+  F4  5-min SMA compression: gap(SMA20,SMA50,SMA200) < 0.5% of price = 2pts, < 1.0% = 1pt
+  F5  1H perfect (2pts): price >= SMA20 > SMA50 > SMA200 + price >= weekly TC (bull) or <= BC (bear)
+      1H good   (1pt):  price >= SMA20 > SMA50 (200 above both) + price >= weekly TC/BC
 
 Stocks scoring >= 6 appear in results.json.
-Setup is labelled BULLISH or BEARISH based on F4 + F5 agreement.
+Setup labelled BULLISH or BEARISH based on F5 1H bias.
 """
 
 import json, datetime, sys
@@ -31,9 +32,11 @@ CPR_BOT_JSON_URL = (
     "https://gajapriyaannadurai.github.io/cpr-bot/cpr_list.json"
 )
 
-MIN_SCORE    = 6      # minimum score to appear in filtered list
-NARROW_PCT   = 0.3    # CPR width % threshold for "Narrow CPR"
-ATR_RATIO_TH = 0.75   # ATR contraction threshold
+MIN_SCORE        = 6      # minimum score to appear in filtered list
+NARROW_PCT       = 0.3    # CPR width % threshold for "Narrow CPR"
+ATR_RATIO_TH     = 0.75   # ATR contraction threshold
+SMA_COMPRESS_2PT = 0.5    # 5-min SMA gap < this % → 2pts (tight compression)
+SMA_COMPRESS_1PT = 1.0    # 5-min SMA gap < this % → 1pt (mild compression)
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -120,10 +123,13 @@ def fetch_inside_cpr_symbols():
 # 5-FILTER SCORER
 # ═══════════════════════════════════════════════════════════════════
 
-def score_stock(sym, df_d, df_1h):
+def score_stock(sym, df_d, df_1h, df_5m=None):
     """
     Returns dict with score, setup (BULLISH/BEARISH/NEUTRAL), filter notes.
     Returns None if data is insufficient.
+
+    F4 = 5-min SMA compression: gap between SMA20/50/200 as % of price
+    F5 = 1H SMA stack + price vs weekly TC/BC (2pts perfect, 1pt good)
     """
     if df_d is None or len(df_d) < 30:
         return None
@@ -174,61 +180,99 @@ def score_stock(sym, df_d, df_1h):
               1 if (dist_r1 >= 0.5*atr14 or dist_s1 >= 0.5*atr14) else 0
     f3_note = f"R1 gap {dist_r1:.1f} | S1 gap {dist_s1:.1f}"
 
-    # ── F4: Daily SMA alignment ───────────────────────────────────
-    cl  = df_d["Close"]
-    s20 = sma(cl, 20);  s50 = sma(cl, 50);  s200 = sma(cl, 200)
-
-    if s20 and s50 and s200:
-        if s20 > s50 > s200:
-            f4 = 2;  trend = "BULLISH";  f4_note = f"20>{int(s20)} 50>{int(s50)} 200>{int(s200)}"
-        elif s20 < s50 < s200:
-            f4 = 2;  trend = "BEARISH";  f4_note = f"20<{int(s20)} 50<{int(s50)} 200<{int(s200)}"
+    # ── F4: 5-min SMA compression ─────────────────────────────────
+    # All 3 SMAs (20, 50, 200) must be close together on 5-min chart.
+    # Gap = (max SMA - min SMA) / price * 100
+    # < 0.5% → tight compression = 2pts
+    # < 1.0% → mild compression  = 1pt
+    # >= 1.0% → SMAs spread out  = 0pts
+    f4 = 0; f4_note = "no 5-min data"
+    if df_5m is not None and len(df_5m) >= 200:
+        m5c   = df_5m["Close"]
+        m5_20 = sma(m5c, 20)
+        m5_50 = sma(m5c, 50)
+        m5_200= sma(m5c, 200)
+        m5_px = float(m5c.iloc[-1])
+        if m5_20 and m5_50 and m5_200:
+            gap_pct = (max(m5_20, m5_50, m5_200) - min(m5_20, m5_50, m5_200)) / m5_px * 100
+            gap_pct = round(gap_pct, 3)
+            if gap_pct < SMA_COMPRESS_2PT:
+                f4 = 2; f4_note = f"5m SMA tight ({gap_pct:.3f}% gap)"
+            elif gap_pct < SMA_COMPRESS_1PT:
+                f4 = 1; f4_note = f"5m SMA mild ({gap_pct:.3f}% gap)"
+            else:
+                f4 = 0; f4_note = f"5m SMA spread ({gap_pct:.3f}% gap)"
         else:
-            f4 = 0;  trend = "NEUTRAL";  f4_note = "SMAs mixed"
-    elif s20 and s50:
-        trend   = "BULLISH" if s20 > s50 else "BEARISH"
-        f4      = 1
-        f4_note = f"20{'>'if s20>s50 else '<'}50 (no 200 data)"
-    else:
-        f4 = 0;  trend = "NEUTRAL";  f4_note = "insufficient SMA data"
+            f4 = 1; f4_note = "5m SMA partial data"
+    elif df_5m is not None and len(df_5m) >= 50:
+        f4 = 1; f4_note = "5m data limited (<200 bars)"
 
-    # ── F5: 1H SMA + weekly CPR ───────────────────────────────────
+    # ── F5: 1H SMA stack + price vs weekly TC/BC ─────────────────
+    # Bullish perfect (2pts): price >= SMA20 > SMA50 > SMA200
+    #                         AND price >= weekly TC
+    # Bullish good   (1pt):  price >= SMA20 > SMA50
+    #                         (200 SMA above = mixed, acceptable)
+    #                         AND price >= weekly TC
+    # Bearish = exact mirror using weekly BC (lower of CPR)
     htf = "UNKNOWN"
     f5  = 0
     f5_note = "no 1H data"
 
     if df_1h is not None and len(df_1h) >= 50:
-        h1c   = df_1h["Close"]
-        h1_20 = sma(h1c, 20);  h1_50 = sma(h1c, 50)
-        h1_px = float(h1c.iloc[-1])
-        wcpr  = weekly_cpr(df_d)
-        wmid  = (wcpr["upper"] + wcpr["lower"]) / 2 if wcpr else None
+        h1c    = df_1h["Close"]
+        h1_20  = sma(h1c, 20)
+        h1_50  = sma(h1c, 50)
+        h1_200 = sma(h1c, 200) if len(h1c) >= 200 else None
+        h1_px  = float(h1c.iloc[-1])
 
-        h1_bull = h1_20 and h1_50 and (h1_20 > h1_50)
-        h1_bear = h1_20 and h1_50 and (h1_20 < h1_50)
-        abv_w   = wmid and h1_px > wmid
-        blw_w   = wmid and h1_px < wmid
+        wcpr   = weekly_cpr(df_d)
+        w_tc   = wcpr["upper"] if wcpr else None   # weekly TC
+        w_bc   = wcpr["lower"] if wcpr else None   # weekly BC
 
-        if h1_bull and abv_w:
-            f5=2; htf="BULLISH"; f5_note="1H SMAs bull + above weekly CPR"
-        elif h1_bear and blw_w:
-            f5=2; htf="BEARISH"; f5_note="1H SMAs bear + below weekly CPR"
-        elif h1_bull or abv_w:
-            f5=1; htf="WEAK_BULL"; f5_note="1H partial bullish"
-        elif h1_bear or blw_w:
-            f5=1; htf="WEAK_BEAR"; f5_note="1H partial bearish"
+        if h1_20 and h1_50:
+            # ── Bullish conditions ────────────────────────────────
+            abv_w_tc   = w_tc and h1_px >= w_tc
+            price_sma20_bull = h1_px >= h1_20
+            stack_20_50_bull = h1_20 > h1_50
+            full_stack_bull  = h1_200 and (h1_20 > h1_50 > h1_200)
+            partial_bull     = stack_20_50_bull and (not h1_200 or h1_200 >= h1_50)
+
+            # ── Bearish conditions ────────────────────────────────
+            blw_w_bc   = w_bc and h1_px <= w_bc
+            price_sma20_bear = h1_px <= h1_20
+            stack_20_50_bear = h1_20 < h1_50
+            full_stack_bear  = h1_200 and (h1_20 < h1_50 < h1_200)
+            partial_bear     = stack_20_50_bear and (not h1_200 or h1_200 <= h1_50)
+
+            # Score bullish
+            if price_sma20_bull and full_stack_bull and abv_w_tc:
+                f5=2; htf="BULLISH"
+                f5_note=f"1H perfect bull: px{h1_px:.0f}>=20SMA{h1_20:.0f}>50>{h1_200:.0f} + above wTC{w_tc:.0f}"
+            elif price_sma20_bull and stack_20_50_bull and abv_w_tc:
+                f5=1; htf="BULLISH"
+                f5_note=f"1H good bull: px>=20SMA>50SMA + above wTC (200 mixed)"
+
+            # Score bearish (only if not already scored bullish)
+            elif price_sma20_bear and full_stack_bear and blw_w_bc:
+                f5=2; htf="BEARISH"
+                f5_note=f"1H perfect bear: px{h1_px:.0f}<=20SMA{h1_20:.0f}<50<{h1_200:.0f} + below wBC{w_bc:.0f}"
+            elif price_sma20_bear and stack_20_50_bear and blw_w_bc:
+                f5=1; htf="BEARISH"
+                f5_note=f"1H good bear: px<=20SMA<50SMA + below wBC (200 mixed)"
+
+            else:
+                f5=0; htf="NEUTRAL"; f5_note="1H conditions not met"
         else:
-            f5=0; htf="NEUTRAL"; f5_note="1H neutral"
+            f5=0; htf="NEUTRAL"; f5_note="1H SMA data insufficient"
 
     # ── Total score + setup ───────────────────────────────────────
+    # Setup driven primarily by F5 (1H bias) since daily SMA removed
     score = f1 + f2 + f3 + f4 + f5
 
-    if trend == "BULLISH" and htf in ("BULLISH","WEAK_BULL","UNKNOWN"):
+    if htf == "BULLISH":
         setup = "BULLISH"
-    elif trend == "BEARISH" and htf in ("BEARISH","WEAK_BEAR","UNKNOWN"):
+    elif htf == "BEARISH":
         setup = "BEARISH"
-    elif trend in ("BULLISH","BEARISH"):
-        setup = trend
     else:
         setup = "NEUTRAL"
 
@@ -284,6 +328,16 @@ def main():
     except Exception as e:
         print(f"[data] 1H download error: {e}"); df_1h = None
 
+    # 5-min data: yfinance allows max 60d for 5m interval
+    print(f"[data] Downloading 5-min data...")
+    try:
+        df_5m = yf.download(
+            tickers, period="60d", interval="5m", group_by="ticker",
+            auto_adjust=False, progress=False, threads=True, timeout=120
+        )
+    except Exception as e:
+        print(f"[data] 5-min download error: {e}"); df_5m = None
+
     def get_df(bulk, ticker):
         try:
             if len(tickers) == 1:
@@ -300,9 +354,10 @@ def main():
     for sym in symbols:
         ts  = f"{sym}.NS"
         d_d = get_df(df_daily, ts)
-        d_h = get_df(df_1h, ts) if df_1h is not None else None
+        d_h = get_df(df_1h,    ts) if df_1h is not None else None
+        d_5 = get_df(df_5m,    ts) if df_5m is not None else None
         try:
-            r = score_stock(sym, d_d, d_h)
+            r = score_stock(sym, d_d, d_h, d_5)
             if r and r["score"] >= MIN_SCORE:
                 results.append(r)
         except Exception as ex:
