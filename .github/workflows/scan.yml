@@ -2,7 +2,7 @@ name: Momentum Stocks Scanner
 
 on:
   schedule:
-    - cron: '45 10 * * 1-5'   # 4:15 PM IST — runs 15 min after cpr-bot finishes
+    - cron: '30 11 * * 1-5'   # 5:00 PM IST (11:30 UTC) weekdays
   workflow_dispatch:
 
 permissions:
@@ -22,6 +22,10 @@ jobs:
         run: pip install yfinance pandas numpy
 
       - name: Run scanner
+        env:
+          GMAIL_ADDRESS:      ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          REPORT_RECIPIENT:   ${{ secrets.REPORT_RECIPIENT }}
         run: python scanner.py
 
       - name: Commit results
