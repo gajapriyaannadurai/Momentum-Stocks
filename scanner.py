@@ -20,11 +20,18 @@ Stocks scoring >= 6 appear in results.json.
 Setup labelled BULLISH or BEARISH based on F5 1H bias.
 """
 
-import json, datetime, sys
+import json, datetime, sys, smtplib, os
 import yfinance as yf
 import pandas as pd
 import numpy as np
 import urllib.request
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+# ── Email config (same secrets as cpr-bot) ───────────────────────────────────
+GMAIL_ADDRESS      = os.environ.get("GMAIL_ADDRESS", "").strip()
+GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "").strip()
+REPORT_RECIPIENT   = os.environ.get("REPORT_RECIPIENT", "").strip()
 
 # ── Source: cpr-bot publishes docs/cpr_list.json via GitHub Pages ────────────
 # momentum-stocks reads that URL to get today's Inside CPR symbol list.
@@ -37,6 +44,101 @@ NARROW_PCT       = 0.3    # CPR width % threshold for "Narrow CPR"
 ATR_RATIO_TH     = 0.75   # ATR contraction threshold
 SMA_COMPRESS_2PT = 0.5    # 5-min SMA gap < this % → 2pts (tight compression)
 SMA_COMPRESS_1PT = 1.0    # 5-min SMA gap < this % → 1pt (mild compression)
+
+
+# ═══════════════════════════════════════════════════════════════════
+# EMAIL
+# ═══════════════════════════════════════════════════════════════════
+
+def send_watchlist_email(bullish, bearish, for_date, generated_at):
+    """Send plain stock name list email at 5 PM IST."""
+    if not (GMAIL_ADDRESS and GMAIL_APP_PASSWORD and REPORT_RECIPIENT):
+        print("[email] missing credentials — skipping"); return
+
+    recipients = [r.strip() for r in REPORT_RECIPIENT.split(",") if r.strip()]
+
+    bull_names = [r["sym"] for r in bullish]
+    bear_names = [r["sym"] for r in bearish]
+
+    # Plain text body
+    lines = [
+        f"Stark Momentum Scanner (SMS)",
+        f"For: {for_date}  |  Generated: {generated_at}",
+        "",
+    ]
+    if bull_names:
+        lines.append(f"BULLISH SETUPS ({len(bull_names)})")
+        lines.append("-" * 30)
+        for s in bull_names:
+            lines.append(f"  {s}")
+        lines.append("")
+    else:
+        lines.append("BULLISH SETUPS: None today"); lines.append("")
+
+    if bear_names:
+        lines.append(f"BEARISH SETUPS ({len(bear_names)})")
+        lines.append("-" * 30)
+        for s in bear_names:
+            lines.append(f"  {s}")
+        lines.append("")
+    else:
+        lines.append("BEARISH SETUPS: None today"); lines.append("")
+
+    lines.append("Happy Price Action Trading")
+    lines.append("www.tradingwithgp.com")
+
+    # HTML body
+    def stock_rows(names, color):
+        if not names:
+            return "<tr><td colspan='2' style='color:#888;padding:6px 0'>None today</td></tr>"
+        return "".join(
+            f"<tr><td style='padding:5px 16px 5px 0;font-weight:600;color:{color}'>{s}</td></tr>"
+            for s in names
+        )
+
+    html = f"""
+    <div style="font-family:Arial,sans-serif;max-width:480px;color:#1a2847">
+      <div style="background:#1a2847;color:#fff;padding:16px 20px;border-radius:8px 8px 0 0">
+        <div style="font-size:11px;opacity:0.6;letter-spacing:1px">STARK SCHOOL OF FINANCE</div>
+        <div style="font-size:18px;font-weight:700;margin-top:4px">Stark Momentum Scanner</div>
+        <div style="font-size:12px;opacity:0.5;margin-top:2px">For {for_date}</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e2e6ed;border-top:none;padding:20px;border-radius:0 0 8px 8px">
+        <div style="margin-bottom:16px">
+          <div style="font-size:12px;font-weight:700;letter-spacing:1px;color:#2d8a4e;margin-bottom:8px">
+            BULLISH SETUPS — {len(bull_names)}
+          </div>
+          <table>{stock_rows(bull_names, '#2d8a4e')}</table>
+        </div>
+        <hr style="border:none;border-top:1px solid #e2e6ed;margin:16px 0"/>
+        <div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:1px;color:#b41e1e;margin-bottom:8px">
+            BEARISH SETUPS — {len(bear_names)}
+          </div>
+          <table>{stock_rows(bear_names, '#b41e1e')}</table>
+        </div>
+        <hr style="border:none;border-top:1px solid #e2e6ed;margin:16px 0"/>
+        <div style="font-size:11px;color:#888;text-align:center">
+          Happy Price Action Trading &nbsp;|&nbsp; www.tradingwithgp.com
+        </div>
+      </div>
+    </div>
+    """
+
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["From"]    = GMAIL_ADDRESS
+        msg["To"]      = ", ".join(recipients)
+        msg["Subject"] = f"📊 SMS Watchlist — {for_date} | Bull:{len(bull_names)} Bear:{len(bear_names)}"
+        msg.attach(MIMEText("\n".join(lines), "plain"))
+        msg.attach(MIMEText(html, "html"))
+        with smtplib.SMTP("smtp.gmail.com", 587) as s:
+            s.starttls()
+            s.login(GMAIL_ADDRESS, GMAIL_APP_PASSWORD)
+            s.sendmail(GMAIL_ADDRESS, recipients, msg.as_string())
+        print(f"[email] Watchlist sent to {recipients}")
+    except Exception as e:
+        print(f"[email] Error: {e}")
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -388,6 +490,13 @@ def main():
     with open("docs/results.json", "w") as f:
         json.dump(payload, f, indent=2)
     print("[out] docs/results.json written")
+
+    # Send email watchlist
+    send_watchlist_email(
+        [_clean(r) for r in bullish],
+        [_clean(r) for r in bearish],
+        for_date, generated_at
+    )
 
 
 def _clean(r):
