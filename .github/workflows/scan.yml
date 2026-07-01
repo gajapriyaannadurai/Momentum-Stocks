@@ -1,0 +1,33 @@
+name: Momentum Stocks Scanner
+
+on:
+  schedule:
+    - cron: '45 10 * * 1-5'   # 4:15 PM IST — runs 15 min after cpr-bot finishes
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy
+
+      - name: Run scanner
+        run: python scanner.py
+
+      - name: Commit results
+        run: |
+          git config user.name  "CPR Pro Scanner"
+          git config user.email "cpr-scanner@github-actions"
+          git add docs/results.json
+          git diff --staged --quiet || git commit -m "Scan $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push || true
