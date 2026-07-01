@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CPR Pro Scanner — Stark School of Finance</title>
+<style>
+:root {
+  --navy:  #1a2847;
+  --green: #2d8a4e;
+  --red:   #b41e1e;
+  --gold:  #d4a017;
+  --grey:  #6b7280;
+  --border:#e2e6ed;
+  --cream: #f8f9fc;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--cream); color: var(--navy); min-height: 100vh; }
+
+/* ── Header ── */
+header {
+  background: var(--navy);
+  color: #fff;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.brand-line { font-size: 11px; letter-spacing: 1px; opacity: 0.55; text-transform: uppercase; margin-bottom: 4px; }
+header h1 { font-size: 19px; font-weight: 700; }
+.header-sub { font-size: 12px; opacity: 0.5; margin-top: 3px; }
+.access-chip {
+  font-size: 11px; font-weight: 700; padding: 5px 14px;
+  border-radius: 20px; letter-spacing: 0.5px;
+}
+.chip-free { background: var(--gold);  color: var(--navy); }
+.chip-paid { background: var(--green); color: #fff; }
+
+/* ── Meta bar ── */
+.meta {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 28px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--grey);
+}
+.meta strong { color: var(--navy); }
+.meta-right { margin-left: auto; font-size: 12px; }
+
+/* ── Tabs ── */
+.tabs {
+  background: #fff;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  padding: 0 28px;
+  gap: 4px;
+}
+.tab {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  color: var(--grey);
+  margin-bottom: -2px;
+  user-select: none;
+}
+.tab:hover { color: var(--navy); }
+.tab.bull { color: var(--green); border-bottom-color: var(--green); }
+.tab.bear { color: var(--red);   border-bottom-color: var(--red); }
+
+/* ── Stock grid ── */
+.grid-wrap { padding: 24px 28px; }
+.section-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 14px;
+}
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+/* ── Stock card ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+  transition: box-shadow 0.15s;
+}
+.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.card-sym { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-setup {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  margin-top: 4px;
+}
+.bull-txt { color: var(--green); }
+.bear-txt { color: var(--red); }
+.card-score {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.s-high { background: #d4edda; color: #1a5e2e; }
+.s-mid  { background: #fff3cd; color: #7a5200; }
+
+/* Filter dots row */
+.dots { display: flex; gap: 4px; margin-top: 10px; align-items: center; }
+.dot  { width: 9px; height: 9px; border-radius: 50%; }
+.d2   { background: var(--green); }
+.d1   { background: var(--gold); }
+.d0   { background: #d1d5db; }
+.dots-label { font-size: 10px; color: var(--grey); margin-left: 4px; }
+
+/* Width badge */
+.width-tag {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--grey);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-top: 8px;
+}
+
+/* TV link */
+.tv-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #378add;
+  text-decoration: none;
+}
+.tv-link:hover { text-decoration: underline; }
+
+/* ── Locked card ── */
+.card-locked {
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── Paywall banner ── */
+.paywall {
+  margin: 0 28px 28px;
+  background: linear-gradient(135deg, var(--navy), #2c3e6b);
+  color: #fff;
+  border-radius: 12px;
+  padding: 26px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.paywall h2 { font-size: 17px; margin-bottom: 6px; }
+.paywall p  { font-size: 13px; opacity: 0.75; line-height: 1.6; max-width: 460px; }
+.paywall-btn {
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.paywall-btn:hover { background: #e8b420; }
+
+/* ── Empty / loading / error ── */
+.center { text-align: center; padding: 60px 24px; color: var(--grey); }
+.spinner {
+  width: 34px; height: 34px;
+  border: 3px solid var(--border);
+  border-top-color: var(--navy);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-msg { font-size: 15px; color: var(--navy); margin-bottom: 6px; font-weight: 600; }
+.empty-sub  { font-size: 13px; }
+
+/* ── Footer ── */
+footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  margin-top: 40px;
+}
+footer a { color: rgba(255,255,255,0.65); }
+
+/* ── Responsive ── */
+@media (max-width: 560px) {
+  header { padding: 16px; }
+  .grid-wrap { padding: 16px; }
+  .paywall { padding: 20px; }
+  .tabs { padding: 0 16px; }
+  .meta { padding: 10px 16px; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="brand-line">Stark School of Finance</div>
+    <h1>CPR Pro Scanner</h1>
+    <div class="header-sub">Inside CPR · Narrow · SMA Trend · ATR Squeeze · 1H Bias</div>
+  </div>
+  <div id="chip" class="access-chip chip-free">FREE PREVIEW</div>
+</header>
+
+<div class="meta">
+  <span>🟢 Bullish: <strong id="cnt-bull">—</strong></span>
+  <span>🔴 Bearish: <strong id="cnt-bear">—</strong></span>
+  <span>For: <strong id="for-date">—</strong></span>
+  <span class="meta-right" id="updated">—</span>
+</div>
+
+<div class="tabs">
+  <div class="tab bull" id="tb-bull" onclick="setTab('bull')">▲ Bullish</div>
+  <div class="tab"      id="tb-bear" onclick="setTab('bear')">▼ Bearish</div>
+</div>
+
+<div id="content">
+  <div class="center">
+    <div class="spinner"></div>
+    <div>Loading scanner...</div>
+  </div>
+</div>
+
+<footer>
+  &copy; Stark School of Finance &nbsp;|&nbsp;
+  <a href="https://www.tradingwithgp.com" target="_blank">tradingwithgp.com</a>
+  &nbsp;|&nbsp; Happy Price Action Trading
+  <br><br>
+  <span style="font-size:11px">For educational purposes only. Not SEBI registered investment advice.</span>
+</footer>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────
+const JSON_URL      = "https://gajapriyaannadurai.github.io/momentum-stocks/results.json";
+const SUBSCRIBE_URL = "https://www.tradingwithgp.com";   // ← update to Graphy paid page URL
+const FREE_LIMIT    = 3;   // cards visible to free users
+
+let DATA = null;
+let TAB  = "bull";
+let PAID = false;
+
+// ── Token check ───────────────────────────────────────────────────
+function checkAccess() {
+  const p = new URLSearchParams(location.search);
+  const t = p.get("token");
+  if (!t) return false;
+  try {
+    const d = JSON.parse(atob(t));
+    return d.plan === "paid" && d.exp > Math.floor(Date.now()/1000);
+  } catch(e) { return false; }
+}
+
+// ── Fetch ─────────────────────────────────────────────────────────
+async function load() {
+  try {
+    const res = await fetch(JSON_URL + "?_=" + Date.now());
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    DATA = await res.json();
+    document.getElementById("cnt-bull").textContent = DATA.bullish.length;
+    document.getElementById("cnt-bear").textContent = DATA.bearish.length;
+    document.getElementById("for-date").textContent = DATA.for_date || "—";
+    document.getElementById("updated").textContent  = "Updated: " + (DATA.generated_at || "—");
+    render();
+  } catch(e) {
+    document.getElementById("content").innerHTML =
+      `<div class="center"><div class="empty-msg">Could not load data</div>
+       <div class="empty-sub">${e.message}<br>Try again after 4:30 PM IST on trading days.</div></div>`;
+  }
+}
+
+// ── Tab ───────────────────────────────────────────────────────────
+function setTab(t) {
+  TAB = t;
+  document.getElementById("tb-bull").className = "tab" + (t==="bull" ? " bull" : "");
+  document.getElementById("tb-bear").className = "tab" + (t==="bear" ? " bear" : "");
+  if (DATA) render();
+}
+
+// ── Render ────────────────────────────────────────────────────────
+function render() {
+  const list = TAB === "bull" ? DATA.bullish : DATA.bearish;
+  const setupLabel = TAB === "bull" ? "BULLISH" : "BEARISH";
+
+  // Update access chip
+  document.getElementById("chip").textContent  = PAID ? "PAID ACCESS" : "FREE PREVIEW";
+  document.getElementById("chip").className     = "access-chip " + (PAID ? "chip-paid" : "chip-free");
+
+  if (!list || list.length === 0) {
+    document.getElementById("content").innerHTML =
+      `<div class="center">
+        <div class="empty-msg">No ${setupLabel.toLowerCase()} setups today</div>
+        <div class="empty-sub">No stocks met all 5 filter conditions for this session.</div>
+       </div>`;
+    return;
+  }
+
+  let cards = "";
+  list.forEach((r, i) => {
+    const locked = !PAID && i >= FREE_LIMIT;
+    const sym    = locked ? "XXXXXX" : r.sym;
+    const setup  = locked ? "------" : r.setup;
+    const score  = locked ? 0  : r.score;
+    const wPct   = locked ? "-.---%" : r.width_pct + "%";
+    const tvLink = locked ? "" : r.tv_link;
+    const sClass = score >= 8 ? "s-high" : "s-mid";
+    const txCls  = r.setup === "BULLISH" ? "bull-txt" : "bear-txt";
+
+    const dots = ["f1","f2","f3","f4","f5"].map(k => {
+      const s = locked ? 0 : r[k];
+      return `<div class="dot d${s}" title="${dotLabel(k)}: ${s}/2"></div>`;
+    }).join("");
+
+    cards += `
+    <div class="card ${locked ? "card-locked" : ""}">
+      <span class="card-score ${sClass}">${score}/10</span>
+      <div class="card-sym">${sym}</div>
+      <div class="card-setup ${txCls}">${setup}</div>
+      <div class="dots">${dots}<span class="dots-label">F1–F5</span></div>
+      <div class="width-tag">CPR width: ${wPct}</div>
+      ${tvLink ? `<a class="tv-link" href="${tvLink}" target="_blank">↗ View on TradingView</a>` : ""}
+    </div>`;
+  });
+
+  let html = `<div class="grid-wrap">
+    <div class="section-label">${setupLabel} setups — score ≥ ${DATA.min_score || 6}</div>
+    <div class="stock-grid">${cards}</div>
+  </div>`;
+
+  // Paywall
+  if (!PAID && list.length > FREE_LIMIT) {
+    const locked = list.length - FREE_LIMIT;
+    html += `<div class="paywall">
+      <div>
+        <h2>Unlock Full Scanner Access</h2>
+        <p>You're seeing ${FREE_LIMIT} of ${list.length} ${setupLabel.toLowerCase()} setups.
+           Subscribe to access all ${locked} locked stocks plus daily watchlist.</p>
+      </div>
+      <a class="paywall-btn" href="${SUBSCRIBE_URL}" target="_blank">Subscribe Now →</a>
+    </div>`;
+  }
+
+  document.getElementById("content").innerHTML = html;
+}
+
+function dotLabel(k) {
+  return {f1:"Inside+Narrow CPR",f2:"ATR Contraction",f3:"R1/S1 Room",f4:"Daily SMA",f5:"1H Bias"}[k];
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+PAID = checkAccess();
+load();
+</script>
+</body>
+</html>
