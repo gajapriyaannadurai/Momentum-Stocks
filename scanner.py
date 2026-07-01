@@ -25,11 +25,10 @@ import pandas as pd
 import numpy as np
 import urllib.request
 
-# ── Source: cpr-bot exports the watchlist here ───────────────────────────────
-# This is the scanner_results.json or cpr-watchlist.js from cpr-bot.
-# We fetch the raw Inside CPR symbol list from it.
+# ── Source: cpr-bot publishes docs/cpr_list.json via GitHub Pages ────────────
+# momentum-stocks reads that URL to get today's Inside CPR symbol list.
 CPR_BOT_JSON_URL = (
-    "https://gajapriyaannadurai.github.io/cpr-bot/scanner_results.json"
+    "https://gajapriyaannadurai.github.io/cpr-bot/cpr_list.json"
 )
 
 MIN_SCORE    = 6      # minimum score to appear in filtered list
@@ -91,7 +90,7 @@ def fetch_inside_cpr_symbols():
     try:
         with urllib.request.urlopen(CPR_BOT_JSON_URL, timeout=30) as r:
             data = json.loads(r.read().decode())
-        # cpr-bot JSON has bullish/bearish/neutral keys — grab all symbols
+        # cpr-bot JSON has a "stocks" list — extract all symbols
         syms = []
         for key in ("bullish", "bearish", "neutral"):
             for s in data.get(key, []):
@@ -104,16 +103,14 @@ def fetch_inside_cpr_symbols():
     except Exception as e:
         print(f"[fetch] cpr-bot JSON failed: {e}")
 
-    # Fallback: try the raw exports/cpr-watchlist.js (JS file, parse manually)
+    # Fallback: try raw GitHub URL directly
     try:
-        js_url = "https://raw.githubusercontent.com/gajapriyaannadurai/cpr-bot/main/exports/cpr-watchlist.js"
+        js_url = "https://raw.githubusercontent.com/gajapriyaannadurai/cpr-bot/main/docs/cpr_list.json"
         with urllib.request.urlopen(js_url, timeout=30) as r:
-            text = r.read().decode()
-        import re
-        syms_raw = re.findall(r"sym:\s*'NSE:([^-']+)", text)
-        syms = list(dict.fromkeys(syms_raw))   # deduplicate preserving order
-        print(f"[fetch] Fallback JS: {len(syms)} symbols")
-        return syms, ""
+            data = json.loads(r.read().decode())
+        syms = [s["sym"] for s in data.get("stocks", [])]
+        print(f"[fetch] Fallback JSON: {len(syms)} symbols")
+        return syms, data.get("for_date", "")
     except Exception as e:
         print(f"[fetch] Fallback JS failed: {e}")
         return [], ""
