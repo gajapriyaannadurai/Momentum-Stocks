@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03 16:02 IST",
+  "generated_at": "2026-07-03 17:04 IST",
   "for_labels": {
     "daily": "06-07-2026",
     "weekly": "06-Jul to 10-Jul-2026"
@@ -24,7 +24,7 @@
           "f4": 1,
           "f4_note": "5m mild 0.932%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above ref TC 430",
+          "f5_note": "1H perfect bull + above TC 430",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAPOLLOTYRE"
         }
       ],
@@ -45,7 +45,7 @@
           "f4": 2,
           "f4_note": "5m tight 0.187%",
           "f5": 1,
-          "f5_note": "1H good bear + below ref BC",
+          "f5_note": "1H good bear + below TC 286",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3APETRONET"
         }
       ]
@@ -68,7 +68,7 @@
           "f4": 2,
           "f4_note": "5m tight 0.369%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above ref TC 5424",
+          "f5_note": "1H perfect bull + above TC 5424",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AALKEM"
         },
         {
@@ -87,7 +87,7 @@
           "f4": 2,
           "f4_note": "5m tight 0.065%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above ref TC 5368",
+          "f5_note": "1H perfect bull + above TC 5368",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AINDIGO"
         },
         {
@@ -106,7 +106,7 @@
           "f4": 2,
           "f4_note": "5m tight 0.262%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above ref TC 1050",
+          "f5_note": "1H perfect bull + above TC 1050",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAUBANK"
         }
       ],
@@ -136,7 +136,7 @@
           "f4": 2,
           "f4_note": "1H tight 1.044%",
           "f5": 2,
-          "f5_note": "Daily perfect bear + below ref BC 91",
+          "f5_note": "Daily perfect bear + below mid 92",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASBFC"
         }
       ]
