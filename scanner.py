@@ -42,8 +42,8 @@ MONTHLY_URL= f"{BASE_URL}/monthly_cpr_list.json"
 # ── Score thresholds ──────────────────────────────────────────────
 THRESHOLDS = {
     "daily":   {"inside": 6, "narrow": 7},
-    "weekly":  {"inside": 7, "narrow": 8},
-    "monthly": {"inside": 7, "narrow": 8},
+    "weekly":  {"inside": 6, "narrow": 7},   # loosened from 7/8
+    "monthly": {"inside": 6, "narrow": 7},   # loosened from 7/8
 }
 
 # ── CPR width thresholds ──────────────────────────────────────────
@@ -55,8 +55,8 @@ ATR_RATIO_TH   = 0.75
 # F4: gap between max and min of SMA20/50/200 as % of price
 COMPRESS = {
     "daily":   (0.5, 1.0),   # 5-min  (tight=2pts, mild=1pt)
-    "weekly":  (1.0, 2.0),   # 1H
-    "monthly": (1.5, 3.0),   # Daily
+    "weekly":  (1.5, 3.0),   # 1H     — loosened from 1.0/2.0
+    "monthly": (2.0, 4.0),   # Daily  — loosened from 1.5/3.0
 }
 
 # ── Full F&O universe for Pool B fresh scan ───────────────────────
