@@ -6,111 +6,80 @@
 <title>Stark Momentum Scanner — Stark School of Finance</title>
 <style>
 :root {
-  --navy:  #1a2847;
-  --green: #2d8a4e;
-  --red:   #b41e1e;
-  --gold:  #d4a017;
-  --grey:  #6b7280;
-  --border:#e2e6ed;
-  --cream: #f8f9fc;
+  --navy:#1a2847; --green:#2d8a4e; --red:#b41e1e; --gold:#d4a017;
+  --grey:#6b7280; --border:#e2e6ed; --cream:#f8f9fc;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--cream); color: var(--navy); }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:var(--cream); color:var(--navy); }
 
-header {
-  background: var(--navy); color: #fff;
-  padding: 18px 28px;
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-}
-.brand-line { font-size: 11px; letter-spacing: 1px; opacity: 0.55; text-transform: uppercase; margin-bottom: 4px; }
-header h1 { font-size: 19px; font-weight: 700; }
-.access-chip { font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 20px; letter-spacing: 0.5px; }
-.chip-free { background: var(--gold);  color: var(--navy); }
-.chip-paid { background: var(--green); color: #fff; }
+header { background:var(--navy); color:#fff; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.brand { font-size:11px; opacity:.55; letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
+header h1 { font-size:18px; font-weight:700; }
+.chip { font-size:11px; font-weight:700; padding:4px 13px; border-radius:20px; }
+.chip-free { background:var(--gold); color:var(--navy); }
+.chip-paid { background:var(--green); color:#fff; }
 
-.meta {
-  background: #fff; border-bottom: 1px solid var(--border);
-  padding: 10px 28px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--grey);
-}
-.meta strong { color: var(--navy); }
-.meta-right { margin-left: auto; font-size: 12px; }
+/* ── Timeframe switcher ── */
+.tf-bar { background:#fff; border-bottom:1px solid var(--border); padding:10px 24px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.tf-btn { padding:6px 18px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; border:2px solid var(--border); color:var(--grey); background:#fff; transition:all .15s; }
+.tf-btn:hover { border-color:var(--navy); color:var(--navy); }
+.tf-btn.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+.tf-label { font-size:12px; color:var(--grey); margin-right:4px; }
+.for-label { font-size:12px; color:var(--grey); margin-left:auto; }
 
-/* ── 4 tabs ── */
-.tabs {
-  background: #fff; border-bottom: 2px solid var(--border);
-  display: flex; padding: 0 28px; gap: 0; overflow-x: auto;
-}
-.tab {
-  padding: 11px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
-  border-bottom: 3px solid transparent; color: var(--grey);
-  margin-bottom: -2px; white-space: nowrap; user-select: none;
-}
-.tab:hover { color: var(--navy); }
-.tab.t-ibull { color: var(--green); border-bottom-color: var(--green); }
-.tab.t-ibear { color: var(--red);   border-bottom-color: var(--red); }
-.tab.t-nbull { color: #1a7a4a;      border-bottom-color: #1a7a4a; }
-.tab.t-nbear { color: #8b0000;      border-bottom-color: #8b0000; }
+/* ── Meta bar ── */
+.meta { background:#fff; border-bottom:1px solid var(--border); padding:8px 24px; display:flex; gap:18px; font-size:13px; color:var(--grey); flex-wrap:wrap; align-items:center; }
+.meta strong { color:var(--navy); }
+.meta-right { margin-left:auto; font-size:11px; }
 
-/* Pool badge in tab area */
-.pool-label {
-  padding: 0 28px 0; background: #fff;
-  font-size: 11px; font-weight: 700; letter-spacing: 1px;
-  color: var(--grey); padding-top: 14px; padding-bottom: 2px;
-  border-top: 1px solid var(--border);
-}
+/* ── 4 Tabs ── */
+.tabs { background:#fff; border-bottom:2px solid var(--border); display:flex; padding:0 24px; overflow-x:auto; }
+.tab { padding:10px 16px; font-size:13px; font-weight:600; cursor:pointer; border-bottom:3px solid transparent; color:var(--grey); margin-bottom:-2px; white-space:nowrap; }
+.tab.t-ibull { color:var(--green);  border-bottom-color:var(--green); }
+.tab.t-ibear { color:var(--red);    border-bottom-color:var(--red); }
+.tab.t-nbull { color:#1a7a4a;       border-bottom-color:#1a7a4a; }
+.tab.t-nbear { color:#8b0000;       border-bottom-color:#8b0000; }
 
 /* ── Cards ── */
-.grid-wrap { padding: 20px 28px; }
-.section-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--grey); margin-bottom: 14px; }
-.stock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
-
-.card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; position: relative; transition: box-shadow 0.15s; }
-.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-.card-sym { font-size: 15px; font-weight: 700; color: var(--navy); }
-.card-setup { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; margin-top: 4px; }
-.bull-txt { color: var(--green); } .bear-txt { color: var(--red); }
-
-/* Pool tag on card */
-.pool-tag {
-  position: absolute; top: 10px; left: 12px;
-  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
-  padding: 1px 6px; border-radius: 4px;
-}
-.tag-inside { background: #e8f4ec; color: var(--green); }
-.tag-narrow { background: #fff3cd; color: #7a5200; }
-
-.card-score { position: absolute; top: 12px; right: 12px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
-.s-high { background: #d4edda; color: #1a5e2e; }
-.s-mid  { background: #fff3cd; color: #7a5200; }
-
-.dots { display: flex; gap: 4px; margin-top: 24px; align-items: center; }
-.dot  { width: 9px; height: 9px; border-radius: 50%; }
-.d2 { background: var(--green); } .d1 { background: var(--gold); } .d0 { background: #d1d5db; }
-.dots-label { font-size: 10px; color: var(--grey); margin-left: 4px; }
-.width-tag { display: inline-block; font-size: 10px; color: var(--grey); background: var(--cream); border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px; margin-top: 8px; }
-.tv-link { display: block; margin-top: 10px; font-size: 11px; color: #378add; text-decoration: none; }
-.tv-link:hover { text-decoration: underline; }
-
-.card-locked { filter: blur(5px); user-select: none; pointer-events: none; }
+.grid-wrap { padding:18px 24px; }
+.sec-label { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--grey); margin-bottom:12px; }
+.stock-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px; }
+.card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:12px 14px; position:relative; transition:box-shadow .15s; }
+.card:hover { box-shadow:0 2px 12px rgba(0,0,0,.08); }
+.pool-tag { position:absolute; top:9px; left:11px; font-size:9px; font-weight:700; padding:1px 5px; border-radius:4px; letter-spacing:.4px; }
+.tag-inside { background:#e8f4ec; color:var(--green); }
+.tag-narrow { background:#fff3cd; color:#7a5200; }
+.card-score { position:absolute; top:10px; right:10px; font-size:11px; font-weight:700; padding:2px 7px; border-radius:10px; }
+.s-high { background:#d4edda; color:#1a5e2e; } .s-mid { background:#fff3cd; color:#7a5200; }
+.card-sym { font-size:14px; font-weight:700; color:var(--navy); margin-top:20px; }
+.card-setup { font-size:10px; font-weight:700; letter-spacing:.8px; margin-top:3px; }
+.bull-txt { color:var(--green); } .bear-txt { color:var(--red); }
+.dots { display:flex; gap:3px; margin-top:9px; align-items:center; }
+.dot { width:8px; height:8px; border-radius:50%; }
+.d2{background:var(--green);} .d1{background:var(--gold);} .d0{background:#d1d5db;}
+.dots-lbl { font-size:9px; color:var(--grey); margin-left:3px; }
+.w-tag { display:inline-block; font-size:10px; color:var(--grey); background:var(--cream); border:1px solid var(--border); border-radius:5px; padding:2px 6px; margin-top:7px; }
+.tv-link { display:block; margin-top:8px; font-size:11px; color:#378add; text-decoration:none; }
+.tv-link:hover { text-decoration:underline; }
+.card-locked { filter:blur(5px); user-select:none; pointer-events:none; }
 
 /* Paywall */
-.paywall { margin: 0 28px 28px; background: linear-gradient(135deg, var(--navy), #2c3e6b); color: #fff; border-radius: 12px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-.paywall h2 { font-size: 16px; margin-bottom: 6px; }
-.paywall p  { font-size: 13px; opacity: 0.75; max-width: 420px; line-height: 1.5; }
-.paywall-btn { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 13px; padding: 11px 24px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
-.paywall-btn:hover { background: #e8b420; }
+.paywall { margin:0 24px 24px; background:linear-gradient(135deg,var(--navy),#2c3e6b); color:#fff; border-radius:10px; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+.paywall h2 { font-size:15px; margin-bottom:5px; }
+.paywall p  { font-size:12px; opacity:.75; max-width:380px; line-height:1.5; }
+.pay-btn { background:var(--gold); color:var(--navy); font-weight:700; font-size:13px; padding:10px 22px; border-radius:7px; text-decoration:none; white-space:nowrap; }
+.pay-btn:hover { background:#e8b420; }
 
-.center { text-align: center; padding: 60px 24px; color: var(--grey); }
-.spinner { width: 34px; height: 34px; border: 3px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 14px; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.center { text-align:center; padding:50px 20px; color:var(--grey); }
+.spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--navy); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto 12px; }
+@keyframes spin { to { transform:rotate(360deg); } }
 
-footer { background: var(--navy); color: rgba(255,255,255,0.45); text-align: center; padding: 20px; font-size: 12px; margin-top: 40px; }
-footer a { color: rgba(255,255,255,0.65); }
+footer { background:var(--navy); color:rgba(255,255,255,.4); text-align:center; padding:18px; font-size:12px; margin-top:32px; }
+footer a { color:rgba(255,255,255,.65); }
 
-@media (max-width: 560px) {
-  header { padding: 14px 16px; } .grid-wrap { padding: 14px 16px; }
-  .tabs { padding: 0 10px; } .meta { padding: 10px 16px; gap: 10px; }
-  .paywall { padding: 18px; }
+@media(max-width:560px){
+  header,. tf-bar,.meta,.grid-wrap { padding-left:14px; padding-right:14px; }
+  .tabs { padding:0 10px; }
 }
 </style>
 </head>
@@ -118,35 +87,44 @@ footer a { color: rgba(255,255,255,0.65); }
 
 <header>
   <div>
-    <div class="brand-line">Stark School of Finance</div>
+    <div class="brand">Stark School of Finance</div>
     <h1>Stark Momentum Scanner</h1>
   </div>
-  <div id="chip" class="access-chip chip-free">FREE PREVIEW</div>
+  <div id="chip" class="chip chip-free">FREE PREVIEW</div>
 </header>
 
-<div class="meta">
-  <span>Inside CPR — 🟢 <strong id="cnt-ibull">—</strong> 🔴 <strong id="cnt-ibear">—</strong></span>
-  <span>Narrow CPR — 🟢 <strong id="cnt-nbull">—</strong> 🔴 <strong id="cnt-nbear">—</strong></span>
-  <span>For: <strong id="for-date">—</strong></span>
-  <span class="meta-right" id="updated">—</span>
+<!-- Timeframe switcher -->
+<div class="tf-bar">
+  <span class="tf-label">Timeframe:</span>
+  <button class="tf-btn active" id="tf-daily"   onclick="setTF('daily')">Daily</button>
+  <button class="tf-btn"        id="tf-weekly"  onclick="setTF('weekly')">Weekly</button>
+  <button class="tf-btn"        id="tf-monthly" onclick="setTF('monthly')">Monthly</button>
+  <span class="for-label" id="for-lbl"></span>
 </div>
 
+<!-- Meta counts -->
+<div class="meta">
+  <span>Inside — 🟢 <strong id="cnt-ibull">—</strong> 🔴 <strong id="cnt-ibear">—</strong></span>
+  <span>Narrow — 🟢 <strong id="cnt-nbull">—</strong> 🔴 <strong id="cnt-nbear">—</strong></span>
+  <span class="meta-right" id="updated-at">—</span>
+</div>
+
+<!-- 4 tabs -->
 <div class="tabs">
-  <div class="tab t-ibull" id="tb-ibull" onclick="setTab('ibull')">▲ Inside CPR Bullish</div>
-  <div class="tab"         id="tb-ibear" onclick="setTab('ibear')">▼ Inside CPR Bearish</div>
-  <div class="tab"         id="tb-nbull" onclick="setTab('nbull')">▲ Narrow CPR Bullish</div>
-  <div class="tab"         id="tb-nbear" onclick="setTab('nbear')">▼ Narrow CPR Bearish</div>
+  <div class="tab t-ibull" id="tb-ibull" onclick="setTab('ibull')">▲ Inside Bullish</div>
+  <div class="tab"         id="tb-ibear" onclick="setTab('ibear')">▼ Inside Bearish</div>
+  <div class="tab"         id="tb-nbull" onclick="setTab('nbull')">▲ Narrow Bullish</div>
+  <div class="tab"         id="tb-nbear" onclick="setTab('nbear')">▼ Narrow Bearish</div>
 </div>
 
 <div id="content">
-  <div class="center"><div class="spinner"></div><div>Loading scanner...</div></div>
+  <div class="center"><div class="spinner"></div>Loading scanner...</div>
 </div>
 
 <footer>
   &copy; Stark School of Finance &nbsp;|&nbsp;
   <a href="https://www.tradingwithgp.com" target="_blank">tradingwithgp.com</a>
-  &nbsp;|&nbsp; Happy Price Action Trading
-  <br><br>
+  &nbsp;|&nbsp; Happy Price Action Trading<br><br>
   <span style="font-size:11px">For educational purposes only. Not SEBI registered investment advice.</span>
 </footer>
 
@@ -154,14 +132,15 @@ footer a { color: rgba(255,255,255,0.65); }
 const SUBSCRIBE_URL = "https://www.tradingwithgp.com";
 const FREE_LIMIT    = 3;
 
-let DATA = null, TAB = "ibull", PAID = false;
+let DATA = null, TF = "daily", TAB = "ibull", PAID = false;
 
 function checkAccess() {
-  const p = new URLSearchParams(location.search);
-  const t = p.get("token");
-  if (!t) return false;
-  try { const d = JSON.parse(atob(t)); return d.plan === "paid" && d.exp > Math.floor(Date.now()/1000); }
-  catch(e) { return false; }
+  try {
+    const t = new URLSearchParams(location.search).get("token");
+    if (!t) return false;
+    const d = JSON.parse(atob(t));
+    return d.plan === "paid" && d.exp > Math.floor(Date.now()/1000);
+  } catch(e) { return false; }
 }
 
 async function load() {
@@ -169,16 +148,7 @@ async function load() {
     const res = await fetch("./results.json?_=" + Date.now());
     if (!res.ok) throw new Error("HTTP " + res.status);
     DATA = await res.json();
-
-    const ic = DATA.inside_cpr || {bullish:[], bearish:[]};
-    const nc = DATA.narrow_cpr || {bullish:[], bearish:[]};
-
-    document.getElementById("cnt-ibull").textContent = ic.bullish.length;
-    document.getElementById("cnt-ibear").textContent = ic.bearish.length;
-    document.getElementById("cnt-nbull").textContent = nc.bullish.length;
-    document.getElementById("cnt-nbear").textContent = nc.bearish.length;
-    document.getElementById("for-date").textContent  = DATA.for_date || "—";
-    document.getElementById("updated").textContent   = "Updated: " + (DATA.generated_at || "—");
+    document.getElementById("updated-at").textContent = "Updated: " + (DATA.generated_at || "—");
     render();
   } catch(e) {
     document.getElementById("content").innerHTML =
@@ -186,33 +156,66 @@ async function load() {
   }
 }
 
-function setTab(t) {
-  TAB = t;
-  ["ibull","ibear","nbull","nbear"].forEach(id => {
-    const el = document.getElementById("tb-"+id);
-    el.className = "tab" + (id === t ? " t-"+id : "");
+function setTF(tf) {
+  TF = tf;
+  ["daily","weekly","monthly"].forEach(t => {
+    document.getElementById("tf-"+t).className = "tf-btn" + (t===tf?" active":"");
   });
-  if (DATA) render();
+  render();
+}
+
+function setTab(tab) {
+  TAB = tab;
+  ["ibull","ibear","nbull","nbear"].forEach(t => {
+    document.getElementById("tb-"+t).className = "tab" + (t===tab?" t-"+t:"");
+  });
+  render();
 }
 
 function render() {
-  const ic = DATA.inside_cpr || {bullish:[], bearish:[]};
-  const nc = DATA.narrow_cpr || {bullish:[], bearish:[]};
+  if (!DATA) return;
+  const tfData = DATA[TF];
+
+  // Update chip
+  document.getElementById("chip").textContent = PAID ? "PAID ACCESS" : "FREE PREVIEW";
+  document.getElementById("chip").className   = "chip " + (PAID ? "chip-paid" : "chip-free");
+
+  if (!tfData) {
+    const msg = TF === "weekly"  ? "Weekly scan runs every Friday at 5 PM IST." :
+                TF === "monthly" ? "Monthly scan runs on the last Friday of each month." : "No data.";
+    document.getElementById("content").innerHTML =
+      `<div class="center"><b>No ${TF} data available yet</b><br>${msg}</div>`;
+    document.getElementById("for-lbl").textContent = "";
+    ["ibull","ibear","nbull","nbear"].forEach(k => {
+      const el = document.getElementById("cnt-"+k.replace("i","cnt-i").replace("n","cnt-n"));
+    });
+    document.getElementById("cnt-ibull").textContent =
+    document.getElementById("cnt-ibear").textContent =
+    document.getElementById("cnt-nbull").textContent =
+    document.getElementById("cnt-nbear").textContent = "—";
+    return;
+  }
+
+  const ic = tfData.inside_cpr || {bullish:[],bearish:[]};
+  const nc = tfData.narrow_cpr || {bullish:[],bearish:[]};
+
+  document.getElementById("cnt-ibull").textContent = ic.bullish.length;
+  document.getElementById("cnt-ibear").textContent = ic.bearish.length;
+  document.getElementById("cnt-nbull").textContent = nc.bullish.length;
+  document.getElementById("cnt-nbear").textContent = nc.bearish.length;
+  document.getElementById("for-lbl").textContent   = tfData.for ? "For: " + tfData.for : "";
 
   const map = {
-    ibull: { list: ic.bullish, label: "INSIDE CPR — BULLISH SETUPS", minScore: DATA.min_score_inside || 6, pool: "inside" },
-    ibear: { list: ic.bearish, label: "INSIDE CPR — BEARISH SETUPS", minScore: DATA.min_score_inside || 6, pool: "inside" },
-    nbull: { list: nc.bullish, label: "NARROW CPR <0.1% — BULLISH SETUPS", minScore: DATA.min_score_narrow || 7, pool: "narrow" },
-    nbear: { list: nc.bearish, label: "NARROW CPR <0.1% — BEARISH SETUPS", minScore: DATA.min_score_narrow || 7, pool: "narrow" },
+    ibull:{list:ic.bullish, label:"INSIDE CPR — BULLISH",  minScore:tfData.min_score_inside||6, pool:"inside", isBull:true},
+    ibear:{list:ic.bearish, label:"INSIDE CPR — BEARISH",  minScore:tfData.min_score_inside||6, pool:"inside", isBull:false},
+    nbull:{list:nc.bullish, label:"NARROW <0.1% — BULLISH",minScore:tfData.min_score_narrow||7, pool:"narrow", isBull:true},
+    nbear:{list:nc.bearish, label:"NARROW <0.1% — BEARISH",minScore:tfData.min_score_narrow||7, pool:"narrow", isBull:false},
   };
-  const { list, label, minScore, pool } = map[TAB];
-
-  document.getElementById("chip").textContent = PAID ? "PAID ACCESS" : "FREE PREVIEW";
-  document.getElementById("chip").className   = "access-chip " + (PAID ? "chip-paid" : "chip-free");
+  const { list, label, minScore, pool, isBull } = map[TAB];
 
   if (!list || list.length === 0) {
     document.getElementById("content").innerHTML =
-      `<div class="center"><b>No setups today</b><br>No stocks met the filter conditions for this session.</div>`;
+      `<div class="center"><b>No setups today</b><br>No stocks met all filter conditions.</div>`;
     return;
   }
 
@@ -221,52 +224,43 @@ function render() {
     const locked  = !PAID && i >= FREE_LIMIT;
     const sym     = locked ? "XXXXXX" : r.sym;
     const score   = locked ? 0 : r.score;
-    const wPct    = locked ? "-.---%" : r.width_pct + "%";
+    const wPct    = locked ? "-" : r.width_pct + "%";
     const tvLink  = locked ? "" : r.tv_link;
     const sClass  = score >= 8 ? "s-high" : "s-mid";
-    const txCls   = (TAB.includes("bull")) ? "bull-txt" : "bear-txt";
-    const setup   = locked ? "------" : (TAB.includes("bull") ? "BULLISH" : "BEARISH");
+    const txCls   = isBull ? "bull-txt" : "bear-txt";
+    const setup   = locked ? "---" : (isBull ? "BULLISH" : "BEARISH");
     const ptag    = pool === "narrow" ? "NARROW" : "INSIDE";
     const ptagCls = pool === "narrow" ? "tag-narrow" : "tag-inside";
-
-    const dots = ["f1","f2","f3","f4","f5"].map(k => {
+    const dots    = ["f1","f2","f3","f4","f5"].map(k => {
       const s = locked ? 0 : r[k];
-      return `<div class="dot d${s}" title="${dotLabel(k)}: ${s}/2"></div>`;
+      return `<div class="dot d${s}" title="${{f1:'CPR Type',f2:'ATR Squeeze',f3:'R1/S1 Room',f4:'Lower TF Compress',f5:'Higher TF Stack'}[k]}: ${s}/2"></div>`;
     }).join("");
 
-    cards += `
-    <div class="card ${locked ? "card-locked" : ""}">
+    cards += `<div class="card ${locked?"card-locked":""}">
       <span class="pool-tag ${ptagCls}">${ptag}</span>
       <span class="card-score ${sClass}">${score}/10</span>
-      <div class="card-sym" style="margin-top:18px">${sym}</div>
+      <div class="card-sym">${sym}</div>
       <div class="card-setup ${txCls}">${setup}</div>
-      <div class="dots">${dots}<span class="dots-label">F1–F5</span></div>
-      <div class="width-tag">CPR: ${wPct}</div>
-      ${tvLink ? `<a class="tv-link" href="${tvLink}" target="_blank">↗ View on TradingView</a>` : ""}
+      <div class="dots">${dots}<span class="dots-lbl">F1–F5</span></div>
+      <div class="w-tag">CPR: ${wPct}</div>
+      ${tvLink?`<a class="tv-link" href="${tvLink}" target="_blank">↗ TradingView</a>`:""}
     </div>`;
   });
 
   let html = `<div class="grid-wrap">
-    <div class="section-label">${label} — score ≥ ${minScore}</div>
+    <div class="sec-label">${label} — score ≥ ${minScore} · ${TF.toUpperCase()}</div>
     <div class="stock-grid">${cards}</div>
   </div>`;
 
   if (!PAID && list.length > FREE_LIMIT) {
-    const locked = list.length - FREE_LIMIT;
     html += `<div class="paywall">
-      <div>
-        <h2>Unlock Full Scanner Access</h2>
-        <p>You're seeing ${FREE_LIMIT} of ${list.length} setups. Subscribe to access all ${locked} locked stocks.</p>
-      </div>
-      <a class="paywall-btn" href="${SUBSCRIBE_URL}" target="_blank">Subscribe Now →</a>
+      <div><h2>Unlock Full Scanner Access</h2>
+        <p>Showing ${FREE_LIMIT} of ${list.length} setups. Subscribe to unlock all stocks.</p></div>
+      <a class="pay-btn" href="${SUBSCRIBE_URL}" target="_blank">Subscribe Now →</a>
     </div>`;
   }
 
   document.getElementById("content").innerHTML = html;
-}
-
-function dotLabel(k) {
-  return {f1:"CPR Type",f2:"ATR Squeeze",f3:"R1/S1 Room",f4:"5m SMA Compress",f5:"1H Bias"}[k];
 }
 
 PAID = checkAccess();
