@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
 """
-Stark Momentum Scanner (SMS) — momentum-stocks repo
-────────────────────────────────────────────────────
-Two pools scanned daily:
+Stark Momentum Scanner (SMS)
+────────────────────────────
+Three scanners in one file:
+  DAILY   — runs Mon-Fri 5 PM IST
+  WEEKLY  — runs Friday 5 PM IST
+  MONTHLY — runs last Friday of month 5 PM IST
 
-  POOL A — Inside CPR  (from cpr-bot, score >= 6)
-  POOL B — Narrow CPR  (all F&O stocks, width < 0.1%, score >= 7)
+Each scanner has two pools:
+  Pool A — Inside CPR  (from cpr-bot JSON, score >= 6/7/7)
+  Pool B — Narrow CPR  (fresh scan all F&O, width <0.1%, score >= 7/8/8)
 
-Both pools use the same 5 filters:
-  F1  CPR type: Inside (1-2pts) or Narrow <0.1% (2pts)
-  F2  ATR contraction: today ATR / 10d avg ATR < 0.75
-  F3  CPR-to-R1 / S1 distance >= 1x ATR
-  F4  5-min SMA compression: gap(SMA20,50,200) < 0.5% = 2pts, < 1.0% = 1pt
-  F5  1H: price>=SMA20>SMA50>SMA200 + price>=wTC = 2pts (perfect)
-          price>=SMA20>SMA50 + price>=wTC          = 1pt  (good)
-
-Output: docs/results.json with inside_cpr + narrow_cpr sections
-Email:  clean stock name list at 5 PM IST
+Filter framework (same logic, scaled timeframes):
+  F1  CPR type: Inside or Narrow <0.1%
+  F2  ATR contraction ratio < 0.75
+  F3  CPR to R1/S1 distance >= 1x ATR
+  F4  Lower TF SMA compression (Daily=5m, Weekly=1H, Monthly=Daily)
+  F5  Higher TF SMA stack + price vs reference CPR
+      (Daily=1H+weeklyTC, Weekly=Daily+monthlyTC, Monthly=Weekly+quarterlyTC)
 """
 
 import json, datetime, sys, smtplib, os
@@ -27,25 +28,39 @@ import urllib.request
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-# ── Email ─────────────────────────────────────────────────────────────────────
+# ── Email ─────────────────────────────────────────────────────────
 GMAIL_ADDRESS      = os.environ.get("GMAIL_ADDRESS", "").strip()
 GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "").strip()
 REPORT_RECIPIENT   = os.environ.get("REPORT_RECIPIENT", "").strip()
 
-# ── Source for Pool A ─────────────────────────────────────────────────────────
-CPR_BOT_JSON_URL = "https://gajapriyaannadurai.github.io/cpr-bot/cpr_list.json"
+# ── cpr-bot JSON URLs ─────────────────────────────────────────────
+BASE_URL   = "https://raw.githubusercontent.com/gajapriyaannadurai/cpr-bot/main/docs"
+DAILY_URL  = f"{BASE_URL}/cpr_list.json"
+WEEKLY_URL = f"{BASE_URL}/weekly_cpr_list.json"
+MONTHLY_URL= f"{BASE_URL}/monthly_cpr_list.json"
 
-# ── Thresholds ────────────────────────────────────────────────────────────────
-MIN_SCORE_INSIDE = 6      # Pool A minimum score
-MIN_SCORE_NARROW = 7      # Pool B minimum score (stricter)
-INSIDE_CPR_PCT   = 0.3    # Inside CPR: width < 0.3% counts as narrow bonus
-NARROW_CPR_PCT   = 0.1    # Pool B: only stocks with CPR width < 0.1%
-ATR_RATIO_TH     = 0.75   # ATR contraction threshold
-SMA_COMPRESS_2PT = 0.5    # 5-min SMA gap < 0.5% → 2pts
-SMA_COMPRESS_1PT = 1.0    # 5-min SMA gap < 1.0% → 1pt
+# ── Score thresholds ──────────────────────────────────────────────
+THRESHOLDS = {
+    "daily":   {"inside": 6, "narrow": 7},
+    "weekly":  {"inside": 7, "narrow": 8},
+    "monthly": {"inside": 7, "narrow": 8},
+}
 
-# ── Full F&O universe for Pool B ─────────────────────────────────────────────
-ALL_FO_STOCKS = """
+# ── CPR width thresholds ──────────────────────────────────────────
+NARROW_PCT     = 0.1    # Pool B: must be < 0.1%
+INSIDE_NARROW  = 0.3    # Pool A: bonus narrow if < 0.3%
+ATR_RATIO_TH   = 0.75
+
+# ── SMA compression thresholds per timeframe ──────────────────────
+# F4: gap between max and min of SMA20/50/200 as % of price
+COMPRESS = {
+    "daily":   (0.5, 1.0),   # 5-min  (tight=2pts, mild=1pt)
+    "weekly":  (1.0, 2.0),   # 1H
+    "monthly": (1.5, 3.0),   # Daily
+}
+
+# ── Full F&O universe for Pool B fresh scan ───────────────────────
+ALL_FO = """
 RELIANCE TCS HDFCBANK BHARTIARTL ICICIBANK INFY SBIN HINDUNILVR ITC LT KOTAKBANK
 LICI BAJFINANCE HCLTECH MARUTI SUNPHARMA AXISBANK ADANIENT ONGC NTPC TATAMOTORS
 DMART ULTRACEMCO TITAN ASIANPAINT WIPRO BAJAJFINSV NESTLEIND M&M COALINDIA POWERGRID
@@ -80,25 +95,50 @@ def calc_cpr(h, l, c):
     pp = (h + l + c) / 3
     bc = (h + l) / 2
     tc = 2 * pp - bc
-    r1 = 2 * pp - l
-    s1 = 2 * pp - h
     return {
         "upper": max(tc, bc), "lower": min(tc, bc),
-        "width": abs(tc - bc), "r1": r1, "s1": s1
+        "width": abs(tc - bc),
+        "r1": 2*pp - l, "s1": 2*pp - h
     }
 
 def calc_atr(df, period=14):
     hi = df["High"].values; lo = df["Low"].values; cl = df["Close"].values
     trs = [max(hi[i]-lo[i], abs(hi[i]-cl[i-1]), abs(lo[i]-cl[i-1]))
            for i in range(1, len(df))]
-    if len(trs) < period: return None
-    return float(np.mean(trs[-period:]))
+    return float(np.mean(trs[-period:])) if len(trs) >= period else None
 
 def sma(series, n):
     if len(series) < n: return None
     return float(series.iloc[-n:].mean())
 
-def weekly_cpr(df_daily):
+def sma_compress_score(df, tight_pct, mild_pct, min_bars=50):
+    """Score SMA20/50/200 compression on any timeframe dataframe."""
+    if df is None or len(df) < min_bars:
+        return 0, "insufficient data"
+    cl = df["Close"]
+    s20 = sma(cl, 20); s50 = sma(cl, 50); s200 = sma(cl, 200) if len(cl) >= 200 else None
+    px  = float(cl.iloc[-1])
+    if not (s20 and s50):
+        return 0, "SMA data missing"
+    vals = [v for v in [s20, s50, s200] if v]
+    gap  = round((max(vals) - min(vals)) / px * 100, 3)
+    if gap < tight_pct:
+        return 2, f"tight {gap:.3f}%"
+    elif gap < mild_pct:
+        return 1, f"mild {gap:.3f}%"
+    return 0, f"spread {gap:.3f}%"
+
+def get_monthly_cpr(df_daily):
+    """Last completed month's CPR from daily data."""
+    df = df_daily.copy()
+    df.index = pd.to_datetime(df.index)
+    mn = df.resample("ME").agg({"High":"max","Low":"min","Close":"last"}).dropna()
+    if len(mn) < 2: return None
+    r = mn.iloc[-2]
+    return calc_cpr(float(r["High"]), float(r["Low"]), float(r["Close"]))
+
+def get_weekly_cpr_from_daily(df_daily):
+    """Last completed week's CPR from daily data."""
     df = df_daily.copy()
     df.index = pd.to_datetime(df.index)
     wk = df.resample("W-FRI").agg({"High":"max","Low":"min","Close":"last"}).dropna()
@@ -106,165 +146,285 @@ def weekly_cpr(df_daily):
     r = wk.iloc[-2]
     return calc_cpr(float(r["High"]), float(r["Low"]), float(r["Close"]))
 
-def get_df(bulk, ticker, tickers):
+def get_quarterly_cpr(df_daily):
+    """Last completed quarter's CPR from daily data."""
+    df = df_daily.copy()
+    df.index = pd.to_datetime(df.index)
+    qt = df.resample("QE").agg({"High":"max","Low":"min","Close":"last"}).dropna()
+    if len(qt) < 2: return None
+    r = qt.iloc[-2]
+    return calc_cpr(float(r["High"]), float(r["Low"]), float(r["Close"]))
+
+def fetch_json(url):
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            return json.loads(r.read().decode())
+    except Exception as e:
+        print(f"[fetch] {url} — {e}")
+        return None
+
+def get_df(bulk, sym, tickers):
+    ts = f"{sym}.NS"
     try:
         if len(tickers) == 1:
             return bulk.dropna(how="all")
-        if ticker not in bulk.columns.get_level_values(0):
+        if ts not in bulk.columns.get_level_values(0):
             return None
-        return bulk[ticker].dropna(how="all")
+        return bulk[ts].dropna(how="all")
     except Exception:
         return None
 
-
-# ═══════════════════════════════════════════════════════════════════
-# FETCH INSIDE CPR LIST FROM CPR-BOT (Pool A)
-# ═══════════════════════════════════════════════════════════════════
-
-def fetch_inside_cpr_symbols():
-    try:
-        with urllib.request.urlopen(CPR_BOT_JSON_URL, timeout=30) as r:
-            data = json.loads(r.read().decode())
-        syms = [s["sym"] for s in data.get("stocks", [])]
-        if syms:
-            print(f"[fetch] Pool A: {len(syms)} inside-CPR symbols from cpr-bot")
-            return syms, data.get("for_date", "")
-    except Exception as e:
-        print(f"[fetch] cpr-bot JSON failed: {e}")
-    try:
-        fb = "https://raw.githubusercontent.com/gajapriyaannadurai/cpr-bot/main/docs/cpr_list.json"
-        with urllib.request.urlopen(fb, timeout=30) as r:
-            data = json.loads(r.read().decode())
-        syms = [s["sym"] for s in data.get("stocks", [])]
-        print(f"[fetch] Fallback: {len(syms)} symbols")
-        return syms, data.get("for_date", "")
-    except Exception as e:
-        print(f"[fetch] Fallback failed: {e}")
-        return [], ""
+def is_last_friday_of_month():
+    today = datetime.date.today()
+    if today.weekday() != 4:  # not Friday
+        return False
+    next_friday = today + datetime.timedelta(days=7)
+    return next_friday.month != today.month
 
 
 # ═══════════════════════════════════════════════════════════════════
-# 5-FILTER SCORER  (shared by both pools)
+# 5-FILTER SCORER — generic, works for all timeframes
 # ═══════════════════════════════════════════════════════════════════
 
-def score_stock(sym, df_d, df_1h, df_5m, pool="inside"):
+def score_stock(sym, tf, pool,
+                df_daily, df_1h, df_5m, df_weekly,
+                ref_cpr_upper=None, ref_cpr_lower=None):
     """
-    pool = "inside" → F1 checks Inside CPR condition
-    pool = "narrow" → F1 checks Narrow CPR < 0.1% condition
-    Returns scored dict or None.
+    tf   : "daily" | "weekly" | "monthly"
+    pool : "inside" | "narrow"
+    ref_cpr_upper/lower : pre-calculated CPR upper/lower for this stock
+                          (from cpr-bot JSON for Pool A)
     """
-    if df_d is None or len(df_d) < 30:
+    if df_daily is None or len(df_daily) < 30:
         return None
 
-    today = df_d.iloc[-1]; yday = df_d.iloc[-2]
+    today = df_daily.iloc[-1]
+    yday  = df_daily.iloc[-2]
     close = float(today["Close"])
 
-    curr_cpr = calc_cpr(float(today["High"]), float(today["Low"]), float(today["Close"]))
-    prev_cpr = calc_cpr(float(yday["High"]),  float(yday["Low"]),  float(yday["Close"]))
+    # Use pre-calculated CPR if provided (Pool A), else calculate fresh
+    if ref_cpr_upper is not None:
+        curr_upper = ref_cpr_upper
+        curr_lower = ref_cpr_lower
+        curr_width = abs(curr_upper - curr_lower)
+        # R1/S1 from today's OHLC
+        pp = (float(today["High"]) + float(today["Low"]) + float(today["Close"])) / 3
+        curr_r1 = 2*pp - float(today["Low"])
+        curr_s1 = 2*pp - float(today["High"])
+    else:
+        # Fresh calculation for Pool B narrow scan
+        if tf == "daily":
+            c = calc_cpr(float(today["High"]), float(today["Low"]), float(today["Close"]))
+        elif tf == "weekly":
+            df_daily.index = pd.to_datetime(df_daily.index)
+            wk = df_daily.resample("W-FRI").agg({"High":"max","Low":"min","Close":"last"}).dropna()
+            if len(wk) < 1: return None
+            r = wk.iloc[-1]
+            c = calc_cpr(float(r["High"]), float(r["Low"]), float(r["Close"]))
+        else:  # monthly
+            df_daily.index = pd.to_datetime(df_daily.index)
+            mn = df_daily.resample("ME").agg({"High":"max","Low":"min","Close":"last"}).dropna()
+            if len(mn) < 1: return None
+            r = mn.iloc[-1]
+            c = calc_cpr(float(r["High"]), float(r["Low"]), float(r["Close"]))
+        curr_upper = c["upper"]; curr_lower = c["lower"]
+        curr_width = c["width"]; curr_r1 = c["r1"]; curr_s1 = c["s1"]
 
-    width_pct = (curr_cpr["width"] / close) * 100
-    atr14     = calc_atr(df_d.iloc[-20:], 14)
+    width_pct = (curr_width / close) * 100
+
+    # ATR — use appropriate timeframe bars
+    if tf == "daily":
+        atr_df = df_daily
+    elif tf == "weekly":
+        df_daily.index = pd.to_datetime(df_daily.index)
+        atr_df = df_daily.resample("W-FRI").agg({"High":"max","Low":"min","Close":"last"}).dropna()
+    else:
+        df_daily.index = pd.to_datetime(df_daily.index)
+        atr_df = df_daily.resample("ME").agg({"High":"max","Low":"min","Close":"last"}).dropna()
+
+    atr14 = calc_atr(atr_df.iloc[-20:] if len(atr_df) >= 20 else atr_df, 14)
     if atr14 is None: return None
 
-    # ── F1: CPR type check ────────────────────────────────────────
+    # ── F1: CPR type ─────────────────────────────────────────────
     if pool == "inside":
-        is_inside = (curr_cpr["upper"] <= prev_cpr["upper"] and
-                     curr_cpr["lower"] >= prev_cpr["lower"])
-        if not is_inside: return None
-        is_narrow = width_pct < INSIDE_CPR_PCT
-        f1 = 2 if is_narrow else 1
-        f1_note = f"Inside{'+ Narrow' if is_narrow else ''} ({width_pct:.3f}%)"
-    else:  # narrow pool
-        if width_pct >= NARROW_CPR_PCT: return None   # must be < 0.1%
-        f1 = 2
-        f1_note = f"Narrow CPR ({width_pct:.3f}%)"
+        is_narrow_bonus = width_pct < INSIDE_NARROW
+        f1 = 2 if is_narrow_bonus else 1
+        f1_note = f"Inside{'+ Narrow' if is_narrow_bonus else ''} ({width_pct:.3f}%)"
+    else:
+        if width_pct >= NARROW_PCT: return None
+        f1 = 2; f1_note = f"Narrow CPR ({width_pct:.3f}%)"
 
     # ── F2: ATR contraction ───────────────────────────────────────
     atr_list = []
-    for i in range(2, min(13, len(df_d)-14)):
-        a = calc_atr(df_d.iloc[-(i+14):-i], 14)
+    for i in range(2, min(13, len(atr_df)-14)):
+        a = calc_atr(atr_df.iloc[-(i+14):-i], 14)
         if a: atr_list.append(a)
     if atr_list:
-        avg_atr = float(np.mean(atr_list[:10]))
-        ratio   = round(atr14 / avg_atr, 3) if avg_atr > 0 else 1.0
-        f2      = 2 if ratio < ATR_RATIO_TH else (1 if ratio < 0.90 else 0)
+        avg = float(np.mean(atr_list[:10]))
+        ratio = round(atr14/avg, 3) if avg > 0 else 1.0
+        f2 = 2 if ratio < ATR_RATIO_TH else (1 if ratio < 0.90 else 0)
         f2_note = f"ATR ratio {ratio}"
     else:
-        ratio = None; f2 = 1; f2_note = "limited data"
+        ratio = None; f2 = 1; f2_note = "limited ATR data"
 
-    # ── F3: R1 / S1 room ─────────────────────────────────────────
-    dist_r1 = curr_cpr["r1"] - curr_cpr["upper"]
-    dist_s1 = curr_cpr["lower"] - curr_cpr["s1"]
+    # ── F3: R1/S1 room ───────────────────────────────────────────
+    dist_r1 = curr_r1 - curr_upper
+    dist_s1 = curr_lower - curr_s1
     f3 = 2 if (dist_r1 >= atr14 or dist_s1 >= atr14) else \
          1 if (dist_r1 >= 0.5*atr14 or dist_s1 >= 0.5*atr14) else 0
     f3_note = f"R1 gap {dist_r1:.1f} | S1 gap {dist_s1:.1f}"
 
-    # ── F4: 5-min SMA compression ─────────────────────────────────
-    f4 = 0; f4_note = "no 5-min data"
-    if df_5m is not None and len(df_5m) >= 200:
-        m5c    = df_5m["Close"]
-        m5_20  = sma(m5c, 20); m5_50 = sma(m5c, 50); m5_200 = sma(m5c, 200)
-        m5_px  = float(m5c.iloc[-1])
-        if m5_20 and m5_50 and m5_200:
-            gap_pct = (max(m5_20,m5_50,m5_200) - min(m5_20,m5_50,m5_200)) / m5_px * 100
-            gap_pct = round(gap_pct, 3)
-            if gap_pct < SMA_COMPRESS_2PT:
-                f4 = 2; f4_note = f"5m tight ({gap_pct:.3f}%)"
-            elif gap_pct < SMA_COMPRESS_1PT:
-                f4 = 1; f4_note = f"5m mild ({gap_pct:.3f}%)"
+    # ── F4: Lower TF SMA compression ─────────────────────────────
+    tight, mild = COMPRESS[tf]
+    if tf == "daily":
+        f4, f4_note = sma_compress_score(df_5m,    tight, mild, min_bars=200)
+        f4_note = f"5m {f4_note}"
+    elif tf == "weekly":
+        f4, f4_note = sma_compress_score(df_1h,    tight, mild, min_bars=50)
+        f4_note = f"1H {f4_note}"
+    else:  # monthly
+        f4, f4_note = sma_compress_score(df_daily, tight, mild, min_bars=50)
+        f4_note = f"Daily {f4_note}"
+
+    # ── F5: Higher TF SMA stack + price vs reference CPR ─────────
+    htf = "NEUTRAL"; f5 = 0; f5_note = "no HTF data"
+
+    if tf == "daily":
+        htf_df  = df_1h
+        ref_cpr_func = get_weekly_cpr_from_daily
+        min_bars_htf = 50
+        tf_label = "1H"
+    elif tf == "weekly":
+        htf_df  = df_daily
+        ref_cpr_func = get_monthly_cpr
+        min_bars_htf = 50
+        tf_label = "Daily"
+    else:  # monthly
+        htf_df  = df_weekly
+        ref_cpr_func = get_quarterly_cpr
+        min_bars_htf = 20
+        tf_label = "Weekly"
+
+    if htf_df is not None and len(htf_df) >= min_bars_htf:
+        hc    = htf_df["Close"]
+        h20   = sma(hc, 20); h50 = sma(hc, 50)
+        h200  = sma(hc, 200) if len(hc) >= 200 else None
+        h_px  = float(hc.iloc[-1])
+
+        ref   = ref_cpr_func(df_daily)
+        r_tc  = ref["upper"] if ref else None
+        r_bc  = ref["lower"] if ref else None
+
+        if h20 and h50:
+            abv_tc = r_tc and h_px >= r_tc
+            blw_bc = r_bc and h_px <= r_bc
+            full_bull = h200 and (h20 > h50 > h200)
+            full_bear = h200 and (h20 < h50 < h200)
+            part_bull = h20 > h50
+            part_bear = h20 < h50
+
+            if h_px >= h20 and full_bull and abv_tc:
+                f5=2; htf="BULLISH"
+                f5_note=f"{tf_label} perfect bull + above ref TC {r_tc:.0f}"
+            elif h_px >= h20 and part_bull and abv_tc:
+                f5=1; htf="BULLISH"
+                f5_note=f"{tf_label} good bull + above ref TC"
+            elif h_px <= h20 and full_bear and blw_bc:
+                f5=2; htf="BEARISH"
+                f5_note=f"{tf_label} perfect bear + below ref BC {r_bc:.0f}"
+            elif h_px <= h20 and part_bear and blw_bc:
+                f5=1; htf="BEARISH"
+                f5_note=f"{tf_label} good bear + below ref BC"
             else:
-                f4 = 0; f4_note = f"5m spread ({gap_pct:.3f}%)"
-        else:
-            f4 = 1; f4_note = "5m partial SMA data"
-    elif df_5m is not None and len(df_5m) >= 50:
-        f4 = 1; f4_note = "5m limited (<200 bars)"
+                f5=0; htf="NEUTRAL"; f5_note=f"{tf_label} conditions not met"
 
-    # ── F5: 1H SMA + weekly TC/BC ────────────────────────────────
-    htf = "UNKNOWN"; f5 = 0; f5_note = "no 1H data"
-
-    if df_1h is not None and len(df_1h) >= 50:
-        h1c   = df_1h["Close"]
-        h1_20 = sma(h1c, 20); h1_50 = sma(h1c, 50)
-        h1_200= sma(h1c, 200) if len(h1c) >= 200 else None
-        h1_px = float(h1c.iloc[-1])
-        wcpr  = weekly_cpr(df_d)
-        w_tc  = wcpr["upper"] if wcpr else None
-        w_bc  = wcpr["lower"] if wcpr else None
-
-        if h1_20 and h1_50:
-            abv_tc = w_tc and h1_px >= w_tc
-            blw_bc = w_bc and h1_px <= w_bc
-            full_bull = h1_200 and (h1_20 > h1_50 > h1_200)
-            full_bear = h1_200 and (h1_20 < h1_50 < h1_200)
-            part_bull = h1_20 > h1_50
-            part_bear = h1_20 < h1_50
-
-            if h1_px >= h1_20 and full_bull and abv_tc:
-                f5=2; htf="BULLISH"; f5_note=f"1H perfect bull + above wTC {w_tc:.0f}"
-            elif h1_px >= h1_20 and part_bull and abv_tc:
-                f5=1; htf="BULLISH"; f5_note="1H good bull + above wTC (200 mixed)"
-            elif h1_px <= h1_20 and full_bear and blw_bc:
-                f5=2; htf="BEARISH"; f5_note=f"1H perfect bear + below wBC {w_bc:.0f}"
-            elif h1_px <= h1_20 and part_bear and blw_bc:
-                f5=1; htf="BEARISH"; f5_note="1H good bear + below wBC (200 mixed)"
-            else:
-                f5=0; htf="NEUTRAL"; f5_note="1H conditions not met"
-        else:
-            f5=0; htf="NEUTRAL"; f5_note="1H SMA data insufficient"
-
-    # ── Score + setup ─────────────────────────────────────────────
     score = f1 + f2 + f3 + f4 + f5
     setup = htf if htf in ("BULLISH","BEARISH") else "NEUTRAL"
 
     return {
         "sym": sym, "setup": setup, "score": score,
-        "width_pct": round(width_pct, 3), "atr_ratio": ratio,
-        "pool": pool,
+        "width_pct": round(width_pct, 3), "atr_ratio": ratio, "pool": pool,
         "filters": {
-            "f1": {"score":f1,"note":f1_note}, "f2": {"score":f2,"note":f2_note},
-            "f3": {"score":f3,"note":f3_note}, "f4": {"score":f4,"note":f4_note},
-            "f5": {"score":f5,"note":f5_note},
+            "f1":{"score":f1,"note":f1_note}, "f2":{"score":f2,"note":f2_note},
+            "f3":{"score":f3,"note":f3_note}, "f4":{"score":f4,"note":f4_note},
+            "f5":{"score":f5,"note":f5_note},
         }
+    }
+
+
+def _clean(r):
+    return {
+        "sym": r["sym"], "setup": r["setup"], "score": r["score"],
+        "width_pct": r["width_pct"], "atr_ratio": r["atr_ratio"], "pool": r["pool"],
+        "f1":r["filters"]["f1"]["score"],"f1_note":r["filters"]["f1"]["note"],
+        "f2":r["filters"]["f2"]["score"],"f2_note":r["filters"]["f2"]["note"],
+        "f3":r["filters"]["f3"]["score"],"f3_note":r["filters"]["f3"]["note"],
+        "f4":r["filters"]["f4"]["score"],"f4_note":r["filters"]["f4"]["note"],
+        "f5":r["filters"]["f5"]["score"],"f5_note":r["filters"]["f5"]["note"],
+        "tv_link": f"https://www.tradingview.com/chart/?symbol=NSE%3A{r['sym']}"
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════
+# RUN ONE TIMEFRAME
+# ═══════════════════════════════════════════════════════════════════
+
+def run_timeframe(tf, cpr_json, all_dfs, tickers):
+    """Score Pool A (inside CPR) and Pool B (narrow fresh scan) for one timeframe."""
+    thresh = THRESHOLDS[tf]
+    df_daily = all_dfs["daily"]; df_1h = all_dfs["1h"]
+    df_5m    = all_dfs["5m"];    df_weekly = all_dfs["weekly"]
+
+    # ── Pool A: Inside CPR from cpr-bot ──────────────────────────
+    inside_results = []
+    if cpr_json and cpr_json.get("stocks"):
+        pool_a_syms = [(s["sym"], s.get("cpr_upper"), s.get("cpr_lower"))
+                       for s in cpr_json["stocks"]]
+        print(f"[{tf}] Pool A: {len(pool_a_syms)} inside CPR stocks")
+        for sym, cup, clo in pool_a_syms:
+            try:
+                r = score_stock(sym, tf, "inside",
+                                get_df(df_daily, sym, tickers),
+                                get_df(df_1h,    sym, tickers),
+                                get_df(df_5m,    sym, tickers),
+                                get_df(df_weekly,sym, tickers) if df_weekly is not None else None,
+                                ref_cpr_upper=cup, ref_cpr_lower=clo)
+                if r and r["score"] >= thresh["inside"]:
+                    inside_results.append(r)
+            except Exception as ex:
+                print(f"[{tf}] {sym}: {ex}")
+    inside_results.sort(key=lambda x: x["score"], reverse=True)
+
+    # ── Pool B: Narrow CPR fresh scan ────────────────────────────
+    inside_syms = {s["sym"] for s in (cpr_json.get("stocks") or [])}
+    narrow_syms = [s for s in ALL_FO if s not in inside_syms]
+    narrow_results = []
+    print(f"[{tf}] Pool B: scanning {len(narrow_syms)} stocks for narrow CPR <0.1%")
+    for sym in narrow_syms:
+        try:
+            r = score_stock(sym, tf, "narrow",
+                            get_df(df_daily, sym, tickers),
+                            get_df(df_1h,    sym, tickers),
+                            get_df(df_5m,    sym, tickers),
+                            get_df(df_weekly,sym, tickers) if df_weekly is not None else None)
+            if r and r["score"] >= thresh["narrow"]:
+                narrow_results.append(r)
+        except Exception as ex:
+            print(f"[{tf}] {sym}: {ex}")
+    narrow_results.sort(key=lambda x: x["score"], reverse=True)
+
+    def split(lst):
+        return ([r for r in lst if r["setup"]=="BULLISH"],
+                [r for r in lst if r["setup"]=="BEARISH"])
+
+    i_bull, i_bear = split(inside_results)
+    n_bull, n_bear = split(narrow_results)
+    print(f"[{tf}] Inside Bull:{len(i_bull)} Bear:{len(i_bear)} | Narrow Bull:{len(n_bull)} Bear:{len(n_bear)}")
+
+    return {
+        "inside_cpr": {"bullish":[_clean(r) for r in i_bull], "bearish":[_clean(r) for r in i_bear]},
+        "narrow_cpr": {"bullish":[_clean(r) for r in n_bull], "bearish":[_clean(r) for r in n_bear]},
+        "i_bull": i_bull, "i_bear": i_bear, "n_bull": n_bull, "n_bear": n_bear,
     }
 
 
@@ -272,62 +432,76 @@ def score_stock(sym, df_d, df_1h, df_5m, pool="inside"):
 # EMAIL
 # ═══════════════════════════════════════════════════════════════════
 
-def send_watchlist_email(i_bull, i_bear, n_bull, n_bear, for_date, generated_at):
+def send_email(results_map, for_labels, generated_at):
     if not (GMAIL_ADDRESS and GMAIL_APP_PASSWORD and REPORT_RECIPIENT):
-        print("[email] missing credentials — skipping"); return
+        print("[email] missing credentials"); return
     recipients = [r.strip() for r in REPORT_RECIPIENT.split(",") if r.strip()]
 
-    def stock_rows(names, color):
+    def rows(names, color):
         if not names:
-            return "<tr><td style='color:#888;padding:4px 0'>None today</td></tr>"
-        return "".join(
-            f"<tr><td style='padding:4px 16px 4px 0;font-weight:600;color:{color};font-size:14px'>{s}</td></tr>"
-            for s in names
-        )
+            return "<tr><td style='color:#888;padding:3px 0'>None</td></tr>"
+        return "".join(f"<tr><td style='color:{color};font-weight:700;padding:3px 0;font-size:13px'>{s}</td></tr>"
+                       for s in names)
 
-    def section(title, bull, bear, color_b="#2d8a4e", color_r="#b41e1e"):
+    def tf_section(label, res, for_lbl):
+        ib = [r["sym"] for r in res["i_bull"]]; ibr = [r["sym"] for r in res["i_bear"]]
+        nb = [r["sym"] for r in res["n_bull"]]; nbr = [r["sym"] for r in res["n_bear"]]
         return f"""
-        <div style="margin-bottom:24px">
-          <div style="font-size:13px;font-weight:700;letter-spacing:1px;
-                      color:#1a2847;border-bottom:2px solid #e2e6ed;
-                      padding-bottom:6px;margin-bottom:12px">{title}</div>
-          <table style="width:100%"><tr>
-            <td style="vertical-align:top;width:50%">
-              <div style="font-size:11px;color:{color_b};font-weight:700;margin-bottom:6px">
-                BULLISH ({len(bull)})</div>
-              <table>{stock_rows(bull, color_b)}</table>
-            </td>
-            <td style="vertical-align:top;width:50%">
-              <div style="font-size:11px;color:{color_r};font-weight:700;margin-bottom:6px">
-                BEARISH ({len(bear)})</div>
-              <table>{stock_rows(bear, color_r)}</table>
-            </td>
-          </tr></table>
+        <div style="margin-bottom:20px">
+          <div style="background:#1a2847;color:#fff;padding:8px 14px;border-radius:6px;
+                      font-weight:700;font-size:13px;letter-spacing:0.5px">
+            {label} &nbsp;<span style="opacity:0.55;font-weight:400;font-size:11px">{for_lbl}</span>
+          </div>
+          <div style="padding:10px 0">
+            <table style="width:100%"><tr>
+              <td style="vertical-align:top;width:50%;padding-right:12px">
+                <div style="font-size:10px;color:#2d8a4e;font-weight:700;margin-bottom:4px">
+                  INSIDE CPR BULLISH ({len(ib)})</div>
+                <table>{rows(ib,'#2d8a4e')}</table>
+                <div style="font-size:10px;color:#b41e1e;font-weight:700;margin:10px 0 4px">
+                  INSIDE CPR BEARISH ({len(ibr)})</div>
+                <table>{rows(ibr,'#b41e1e')}</table>
+              </td>
+              <td style="vertical-align:top;width:50%;border-left:1px solid #e2e6ed;padding-left:12px">
+                <div style="font-size:10px;color:#1a7a4a;font-weight:700;margin-bottom:4px">
+                  NARROW &lt;0.1% BULLISH ({len(nb)})</div>
+                <table>{rows(nb,'#1a7a4a')}</table>
+                <div style="font-size:10px;color:#8b0000;font-weight:700;margin:10px 0 4px">
+                  NARROW &lt;0.1% BEARISH ({len(nbr)})</div>
+                <table>{rows(nbr,'#8b0000')}</table>
+              </td>
+            </tr></table>
+          </div>
         </div>"""
 
+    tfs_run = list(results_map.keys())
+    subject_parts = []
+    for tf in tfs_run:
+        r = results_map[tf]
+        total = len(r["i_bull"])+len(r["i_bear"])+len(r["n_bull"])+len(r["n_bear"])
+        subject_parts.append(f"{tf.capitalize()}:{total}")
+
     html = f"""
-    <div style="font-family:Arial,sans-serif;max-width:520px;color:#1a2847">
+    <div style="font-family:Arial,sans-serif;max-width:560px;color:#1a2847">
       <div style="background:#1a2847;color:#fff;padding:16px 20px;border-radius:8px 8px 0 0">
         <div style="font-size:11px;opacity:0.55;letter-spacing:1px">STARK SCHOOL OF FINANCE</div>
         <div style="font-size:18px;font-weight:700;margin-top:4px">Stark Momentum Scanner</div>
-        <div style="font-size:12px;opacity:0.5;margin-top:2px">For {for_date} &nbsp;·&nbsp; {generated_at}</div>
+        <div style="font-size:12px;opacity:0.5;margin-top:2px">{generated_at}</div>
       </div>
       <div style="background:#fff;border:1px solid #e2e6ed;border-top:none;
                   padding:20px 24px;border-radius:0 0 8px 8px">
-        {section("INSIDE CPR SETUPS (score ≥ 6)", i_bull, i_bear)}
-        {section("NARROW CPR SETUPS — &lt;0.1% (score ≥ 7)", n_bull, n_bear)}
+        {"".join(tf_section(tf.upper(), results_map[tf], for_labels.get(tf,"")) for tf in tfs_run)}
         <div style="font-size:11px;color:#888;text-align:center;margin-top:8px">
-          Happy Price Action Trading &nbsp;|&nbsp; www.tradingwithgp.com
+          Happy Price Action Trading · www.tradingwithgp.com
         </div>
       </div>
     </div>"""
 
-    total = len(i_bull)+len(i_bear)+len(n_bull)+len(n_bear)
     try:
         msg = MIMEMultipart("alternative")
         msg["From"]    = GMAIL_ADDRESS
         msg["To"]      = ", ".join(recipients)
-        msg["Subject"] = f"📊 SMS — {for_date} | Inside:{len(i_bull)}B/{len(i_bear)}Be  Narrow:{len(n_bull)}B/{len(n_bear)}Be  Total:{total}"
+        msg["Subject"] = f"📊 SMS — {' | '.join(subject_parts)} — {generated_at[:10]}"
         msg.attach(MIMEText(html, "html"))
         with smtplib.SMTP("smtp.gmail.com", 587) as s:
             s.starttls(); s.login(GMAIL_ADDRESS, GMAIL_APP_PASSWORD)
@@ -344,137 +518,94 @@ def send_watchlist_email(i_bull, i_bear, n_bull, n_bear, for_date, generated_at)
 def main():
     ist = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=5, minutes=30)
     generated_at = ist.strftime("%Y-%m-%d %H:%M IST")
+    today_dow    = ist.weekday()   # 0=Mon 4=Fri
     print(f"[start] {generated_at}")
 
-    # ── Pool A: Inside CPR symbols from cpr-bot ───────────────────
-    inside_syms, for_date = fetch_inside_cpr_symbols()
-    print(f"[pool-a] {len(inside_syms)} inside CPR symbols")
+    # ── Decide which timeframes to run ───────────────────────────
+    run_daily   = True
+    run_weekly  = (today_dow == 4)                         # Friday
+    run_monthly = (today_dow == 4 and is_last_friday_of_month())
 
-    # ── Pool B: All F&O stocks for narrow CPR scan ────────────────
-    narrow_syms = [s for s in ALL_FO_STOCKS if s not in inside_syms]
-    print(f"[pool-b] {len(narrow_syms)} F&O stocks to scan for narrow CPR")
+    print(f"[run] Daily:{run_daily} Weekly:{run_weekly} Monthly:{run_monthly}")
 
-    # ── Combine for bulk download ─────────────────────────────────
-    all_syms    = list(dict.fromkeys(inside_syms + narrow_syms))
-    all_tickers = [f"{s}.NS" for s in all_syms]
+    # ── Fetch CPR lists ───────────────────────────────────────────
+    daily_json   = fetch_json(DAILY_URL)
+    weekly_json  = fetch_json(WEEKLY_URL)  if run_weekly  else None
+    monthly_json = fetch_json(MONTHLY_URL) if run_monthly else None
 
-    print(f"[data] Downloading daily data ({len(all_tickers)} tickers)...")
-    try:
-        df_daily = yf.download(
-            all_tickers, period="14mo", group_by="ticker",
-            auto_adjust=False, progress=False, threads=True, timeout=180
-        )
-    except Exception as e:
-        print(f"[data] Daily error: {e}"); sys.exit(1)
+    if run_monthly and not monthly_json:
+        print("[monthly] monthly_cpr_list.json not available — skipping monthly")
+        run_monthly = False
 
-    print("[data] Downloading 1H data...")
-    try:
-        df_1h = yf.download(
-            all_tickers, period="60d", interval="1h", group_by="ticker",
-            auto_adjust=False, progress=False, threads=True, timeout=180
-        )
-    except Exception as e:
-        print(f"[data] 1H error: {e}"); df_1h = None
+    # ── Collect all symbols for bulk download ────────────────────
+    def syms_from(j):
+        return [s["sym"] for s in (j or {}).get("stocks", [])] if j else []
 
-    print("[data] Downloading 5-min data...")
-    try:
-        df_5m = yf.download(
-            all_tickers, period="60d", interval="5m", group_by="ticker",
-            auto_adjust=False, progress=False, threads=True, timeout=180
-        )
-    except Exception as e:
-        print(f"[data] 5m error: {e}"); df_5m = None
+    all_syms = list(dict.fromkeys(
+        syms_from(daily_json) + syms_from(weekly_json) +
+        syms_from(monthly_json) + ALL_FO
+    ))
+    tickers = [f"{s}.NS" for s in all_syms]
+    print(f"[data] {len(tickers)} total tickers to download")
 
-    def gdf(bulk, sym):
-        return get_df(bulk, f"{sym}.NS", all_tickers)
-
-    # ── Score Pool A ──────────────────────────────────────────────
-    print("[score] Pool A — Inside CPR...")
-    inside_results = []
-    for sym in inside_syms:
+    def dl(period, interval=None, timeout=180):
+        kwargs = dict(group_by="ticker", auto_adjust=False,
+                      progress=False, threads=True, timeout=timeout)
+        if interval: kwargs["interval"] = interval
         try:
-            r = score_stock(sym,
-                            gdf(df_daily, sym),
-                            gdf(df_1h,    sym) if df_1h is not None else None,
-                            gdf(df_5m,    sym) if df_5m is not None else None,
-                            pool="inside")
-            if r and r["score"] >= MIN_SCORE_INSIDE:
-                inside_results.append(r)
-        except Exception as ex:
-            print(f"[score] {sym}: {ex}")
-    inside_results.sort(key=lambda x: x["score"], reverse=True)
+            return yf.download(tickers, period=period, **kwargs)
+        except Exception as e:
+            print(f"[data] {interval or 'daily'} error: {e}"); return None
 
-    # ── Score Pool B ──────────────────────────────────────────────
-    print("[score] Pool B — Narrow CPR scan...")
-    narrow_results = []
-    for sym in narrow_syms:
-        try:
-            r = score_stock(sym,
-                            gdf(df_daily, sym),
-                            gdf(df_1h,    sym) if df_1h is not None else None,
-                            gdf(df_5m,    sym) if df_5m is not None else None,
-                            pool="narrow")
-            if r and r["score"] >= MIN_SCORE_NARROW:
-                narrow_results.append(r)
-        except Exception as ex:
-            print(f"[score] {sym}: {ex}")
-    narrow_results.sort(key=lambda x: x["score"], reverse=True)
+    print("[data] Downloading daily (14mo)...")
+    df_d = dl("14mo")
+    print("[data] Downloading 1H (60d)...")
+    df_h = dl("60d",  "1h")
+    print("[data] Downloading 5m (60d)...")
+    df_5 = dl("60d",  "5m")
+    df_w = None
+    if run_monthly:
+        print("[data] Downloading weekly (5y)...")
+        df_w = dl("5y", "1wk")
 
-    # ── Split by setup ────────────────────────────────────────────
-    def split(results):
-        bull = [r for r in results if r["setup"] == "BULLISH"]
-        bear = [r for r in results if r["setup"] == "BEARISH"]
-        return bull, bear
+    if df_d is None or df_d.empty:
+        print("[abort] daily data failed"); sys.exit(1)
 
-    i_bull, i_bear = split(inside_results)
-    n_bull, n_bear = split(narrow_results)
+    all_dfs = {"daily": df_d, "1h": df_h, "5m": df_5, "weekly": df_w}
 
-    print(f"[done] Inside — Bull:{len(i_bull)} Bear:{len(i_bear)}")
-    print(f"[done] Narrow — Bull:{len(n_bull)} Bear:{len(n_bear)}")
+    # ── Run scanners ──────────────────────────────────────────────
+    results_map = {}; for_labels = {}
+
+    if run_daily:
+        results_map["daily"] = run_timeframe("daily", daily_json, all_dfs, all_syms)
+        for_labels["daily"]  = daily_json.get("for_date","") if daily_json else ""
+
+    if run_weekly:
+        results_map["weekly"] = run_timeframe("weekly", weekly_json, all_dfs, all_syms)
+        for_labels["weekly"]  = weekly_json.get("for_week","") if weekly_json else ""
+
+    if run_monthly:
+        results_map["monthly"] = run_timeframe("monthly", monthly_json, all_dfs, all_syms)
+        for_labels["monthly"]  = monthly_json.get("for_month","") if monthly_json else ""
 
     # ── Write results.json ────────────────────────────────────────
     os.makedirs("docs", exist_ok=True)
-    payload = {
-        "generated_at": generated_at,
-        "for_date":     for_date or (ist + datetime.timedelta(days=1)).strftime("%d-%m-%Y"),
-        "min_score_inside": MIN_SCORE_INSIDE,
-        "min_score_narrow": MIN_SCORE_NARROW,
-        "inside_cpr": {
-            "bullish": [_clean(r) for r in i_bull],
-            "bearish": [_clean(r) for r in i_bear],
-        },
-        "narrow_cpr": {
-            "bullish": [_clean(r) for r in n_bull],
-            "bearish": [_clean(r) for r in n_bear],
-        },
-    }
+    payload = {"generated_at": generated_at, "for_labels": for_labels}
+    for tf, res in results_map.items():
+        payload[tf] = {
+            "for":        for_labels.get(tf,""),
+            "inside_cpr": res["inside_cpr"],
+            "narrow_cpr": res["narrow_cpr"],
+            "min_score_inside": THRESHOLDS[tf]["inside"],
+            "min_score_narrow": THRESHOLDS[tf]["narrow"],
+        }
+
     with open("docs/results.json", "w") as f:
         json.dump(payload, f, indent=2)
     print("[out] docs/results.json written")
 
     # ── Send email ────────────────────────────────────────────────
-    send_watchlist_email(
-        [r["sym"] for r in i_bull], [r["sym"] for r in i_bear],
-        [r["sym"] for r in n_bull], [r["sym"] for r in n_bear],
-        payload["for_date"], generated_at
-    )
-
-
-def _clean(r):
-    return {
-        "sym":       r["sym"],
-        "setup":     r["setup"],
-        "score":     r["score"],
-        "width_pct": r["width_pct"],
-        "atr_ratio": r["atr_ratio"],
-        "pool":      r["pool"],
-        "f1": r["filters"]["f1"]["score"], "f1_note": r["filters"]["f1"]["note"],
-        "f2": r["filters"]["f2"]["score"], "f2_note": r["filters"]["f2"]["note"],
-        "f3": r["filters"]["f3"]["score"], "f3_note": r["filters"]["f3"]["note"],
-        "f4": r["filters"]["f4"]["score"], "f4_note": r["filters"]["f4"]["note"],
-        "f5": r["filters"]["f5"]["score"], "f5_note": r["filters"]["f5"]["note"],
-        "tv_link": f"https://www.tradingview.com/chart/?symbol=NSE%3A{r['sym']}"
-    }
+    send_email(results_map, for_labels, generated_at)
 
 
 if __name__ == "__main__":
