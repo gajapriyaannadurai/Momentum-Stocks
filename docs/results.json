@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03 15:58 IST",
+  "generated_at": "2026-07-03 16:02 IST",
   "for_labels": {
     "daily": "06-07-2026",
     "weekly": "06-Jul to 10-Jul-2026"
@@ -119,13 +119,33 @@
     "for": "06-Jul to 10-Jul-2026",
     "inside_cpr": {
       "bullish": [],
-      "bearish": []
+      "bearish": [
+        {
+          "sym": "SBFC",
+          "setup": "BEARISH",
+          "score": 6,
+          "width_pct": 0.307,
+          "atr_ratio": null,
+          "pool": "inside",
+          "f1": 1,
+          "f1_note": "Inside (0.307%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap 0.2 | S1 gap 0.6",
+          "f4": 2,
+          "f4_note": "1H tight 1.044%",
+          "f5": 2,
+          "f5_note": "Daily perfect bear + below ref BC 91",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASBFC"
+        }
+      ]
     },
     "narrow_cpr": {
       "bullish": [],
       "bearish": []
     },
-    "min_score_inside": 7,
-    "min_score_narrow": 8
+    "min_score_inside": 6,
+    "min_score_narrow": 7
   }
 }
