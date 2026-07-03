@@ -15,209 +15,102 @@
   --cream: #f8f9fc;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--cream); color: var(--navy); min-height: 100vh; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--cream); color: var(--navy); }
 
-/* ── Header ── */
 header {
-  background: var(--navy);
-  color: #fff;
-  padding: 20px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
+  background: var(--navy); color: #fff;
+  padding: 18px 28px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
 }
 .brand-line { font-size: 11px; letter-spacing: 1px; opacity: 0.55; text-transform: uppercase; margin-bottom: 4px; }
 header h1 { font-size: 19px; font-weight: 700; }
-.header-sub { font-size: 12px; opacity: 0.5; margin-top: 3px; }
-.access-chip {
-  font-size: 11px; font-weight: 700; padding: 5px 14px;
-  border-radius: 20px; letter-spacing: 0.5px;
-}
+.access-chip { font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 20px; letter-spacing: 0.5px; }
 .chip-free { background: var(--gold);  color: var(--navy); }
 .chip-paid { background: var(--green); color: #fff; }
 
-/* ── Meta bar ── */
 .meta {
-  background: #fff;
-  border-bottom: 1px solid var(--border);
-  padding: 10px 28px;
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 13px;
-  color: var(--grey);
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 10px 28px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--grey);
 }
 .meta strong { color: var(--navy); }
 .meta-right { margin-left: auto; font-size: 12px; }
 
-/* ── Tabs ── */
+/* ── 4 tabs ── */
 .tabs {
-  background: #fff;
-  border-bottom: 2px solid var(--border);
-  display: flex;
-  padding: 0 28px;
-  gap: 4px;
+  background: #fff; border-bottom: 2px solid var(--border);
+  display: flex; padding: 0 28px; gap: 0; overflow-x: auto;
 }
 .tab {
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-  color: var(--grey);
-  margin-bottom: -2px;
-  user-select: none;
+  padding: 11px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
+  border-bottom: 3px solid transparent; color: var(--grey);
+  margin-bottom: -2px; white-space: nowrap; user-select: none;
 }
 .tab:hover { color: var(--navy); }
-.tab.bull { color: var(--green); border-bottom-color: var(--green); }
-.tab.bear { color: var(--red);   border-bottom-color: var(--red); }
+.tab.t-ibull { color: var(--green); border-bottom-color: var(--green); }
+.tab.t-ibear { color: var(--red);   border-bottom-color: var(--red); }
+.tab.t-nbull { color: #1a7a4a;      border-bottom-color: #1a7a4a; }
+.tab.t-nbear { color: #8b0000;      border-bottom-color: #8b0000; }
 
-/* ── Stock grid ── */
-.grid-wrap { padding: 24px 28px; }
-.section-label {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 14px;
+/* Pool badge in tab area */
+.pool-label {
+  padding: 0 28px 0; background: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  color: var(--grey); padding-top: 14px; padding-bottom: 2px;
+  border-top: 1px solid var(--border);
 }
 
-.stock-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-}
+/* ── Cards ── */
+.grid-wrap { padding: 20px 28px; }
+.section-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--grey); margin-bottom: 14px; }
+.stock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
 
-/* ── Stock card ── */
-.card {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 16px;
-  position: relative;
-  transition: box-shadow 0.15s;
-}
+.card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; position: relative; transition: box-shadow 0.15s; }
 .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
 .card-sym { font-size: 15px; font-weight: 700; color: var(--navy); }
-.card-setup {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  margin-top: 4px;
+.card-setup { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; margin-top: 4px; }
+.bull-txt { color: var(--green); } .bear-txt { color: var(--red); }
+
+/* Pool tag on card */
+.pool-tag {
+  position: absolute; top: 10px; left: 12px;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 1px 6px; border-radius: 4px;
 }
-.bull-txt { color: var(--green); }
-.bear-txt { color: var(--red); }
-.card-score {
-  position: absolute;
-  top: 12px; right: 12px;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 10px;
-}
+.tag-inside { background: #e8f4ec; color: var(--green); }
+.tag-narrow { background: #fff3cd; color: #7a5200; }
+
+.card-score { position: absolute; top: 12px; right: 12px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
 .s-high { background: #d4edda; color: #1a5e2e; }
 .s-mid  { background: #fff3cd; color: #7a5200; }
 
-/* Filter dots row */
-.dots { display: flex; gap: 4px; margin-top: 10px; align-items: center; }
+.dots { display: flex; gap: 4px; margin-top: 24px; align-items: center; }
 .dot  { width: 9px; height: 9px; border-radius: 50%; }
-.d2   { background: var(--green); }
-.d1   { background: var(--gold); }
-.d0   { background: #d1d5db; }
+.d2 { background: var(--green); } .d1 { background: var(--gold); } .d0 { background: #d1d5db; }
 .dots-label { font-size: 10px; color: var(--grey); margin-left: 4px; }
-
-/* Width badge */
-.width-tag {
-  display: inline-block;
-  font-size: 10px;
-  color: var(--grey);
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 2px 7px;
-  margin-top: 8px;
-}
-
-/* TV link */
-.tv-link {
-  display: block;
-  margin-top: 10px;
-  font-size: 11px;
-  color: #378add;
-  text-decoration: none;
-}
+.width-tag { display: inline-block; font-size: 10px; color: var(--grey); background: var(--cream); border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px; margin-top: 8px; }
+.tv-link { display: block; margin-top: 10px; font-size: 11px; color: #378add; text-decoration: none; }
 .tv-link:hover { text-decoration: underline; }
 
-/* ── Locked card ── */
-.card-locked {
-  filter: blur(5px);
-  user-select: none;
-  pointer-events: none;
-}
+.card-locked { filter: blur(5px); user-select: none; pointer-events: none; }
 
-/* ── Paywall banner ── */
-.paywall {
-  margin: 0 28px 28px;
-  background: linear-gradient(135deg, var(--navy), #2c3e6b);
-  color: #fff;
-  border-radius: 12px;
-  padding: 26px 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.paywall h2 { font-size: 17px; margin-bottom: 6px; }
-.paywall p  { font-size: 13px; opacity: 0.75; line-height: 1.6; max-width: 460px; }
-.paywall-btn {
-  background: var(--gold);
-  color: var(--navy);
-  font-weight: 700;
-  font-size: 14px;
-  padding: 12px 28px;
-  border-radius: 8px;
-  text-decoration: none;
-  white-space: nowrap;
-}
+/* Paywall */
+.paywall { margin: 0 28px 28px; background: linear-gradient(135deg, var(--navy), #2c3e6b); color: #fff; border-radius: 12px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.paywall h2 { font-size: 16px; margin-bottom: 6px; }
+.paywall p  { font-size: 13px; opacity: 0.75; max-width: 420px; line-height: 1.5; }
+.paywall-btn { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 13px; padding: 11px 24px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
 .paywall-btn:hover { background: #e8b420; }
 
-/* ── Empty / loading / error ── */
 .center { text-align: center; padding: 60px 24px; color: var(--grey); }
-.spinner {
-  width: 34px; height: 34px;
-  border: 3px solid var(--border);
-  border-top-color: var(--navy);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  margin: 0 auto 14px;
-}
+.spinner { width: 34px; height: 34px; border: 3px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 14px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.empty-msg { font-size: 15px; color: var(--navy); margin-bottom: 6px; font-weight: 600; }
-.empty-sub  { font-size: 13px; }
 
-/* ── Footer ── */
-footer {
-  background: var(--navy);
-  color: rgba(255,255,255,0.45);
-  text-align: center;
-  padding: 20px;
-  font-size: 12px;
-  margin-top: 40px;
-}
+footer { background: var(--navy); color: rgba(255,255,255,0.45); text-align: center; padding: 20px; font-size: 12px; margin-top: 40px; }
 footer a { color: rgba(255,255,255,0.65); }
 
-/* ── Responsive ── */
 @media (max-width: 560px) {
-  header { padding: 16px; }
-  .grid-wrap { padding: 16px; }
-  .paywall { padding: 20px; }
-  .tabs { padding: 0 16px; }
-  .meta { padding: 10px 16px; gap: 12px; }
+  header { padding: 14px 16px; } .grid-wrap { padding: 14px 16px; }
+  .tabs { padding: 0 10px; } .meta { padding: 10px 16px; gap: 10px; }
+  .paywall { padding: 18px; }
 }
 </style>
 </head>
@@ -232,22 +125,21 @@ footer a { color: rgba(255,255,255,0.65); }
 </header>
 
 <div class="meta">
-  <span>🟢 Bullish: <strong id="cnt-bull">—</strong></span>
-  <span>🔴 Bearish: <strong id="cnt-bear">—</strong></span>
+  <span>Inside CPR — 🟢 <strong id="cnt-ibull">—</strong> 🔴 <strong id="cnt-ibear">—</strong></span>
+  <span>Narrow CPR — 🟢 <strong id="cnt-nbull">—</strong> 🔴 <strong id="cnt-nbear">—</strong></span>
   <span>For: <strong id="for-date">—</strong></span>
   <span class="meta-right" id="updated">—</span>
 </div>
 
 <div class="tabs">
-  <div class="tab bull" id="tb-bull" onclick="setTab('bull')">▲ Bullish</div>
-  <div class="tab"      id="tb-bear" onclick="setTab('bear')">▼ Bearish</div>
+  <div class="tab t-ibull" id="tb-ibull" onclick="setTab('ibull')">▲ Inside CPR Bullish</div>
+  <div class="tab"         id="tb-ibear" onclick="setTab('ibear')">▼ Inside CPR Bearish</div>
+  <div class="tab"         id="tb-nbull" onclick="setTab('nbull')">▲ Narrow CPR Bullish</div>
+  <div class="tab"         id="tb-nbear" onclick="setTab('nbear')">▼ Narrow CPR Bearish</div>
 </div>
 
 <div id="content">
-  <div class="center">
-    <div class="spinner"></div>
-    <div>Loading scanner...</div>
-  </div>
+  <div class="center"><div class="spinner"></div><div>Loading scanner...</div></div>
 </div>
 
 <footer>
@@ -259,80 +151,83 @@ footer a { color: rgba(255,255,255,0.65); }
 </footer>
 
 <script>
-// ── Config ────────────────────────────────────────────────────────
-const JSON_URL      = "./results.json";
-const SUBSCRIBE_URL = "https://www.tradingwithgp.com";   // ← update to Graphy paid page URL
-const FREE_LIMIT    = 3;   // cards visible to free users
+const SUBSCRIBE_URL = "https://www.tradingwithgp.com";
+const FREE_LIMIT    = 3;
 
-let DATA = null;
-let TAB  = "bull";
-let PAID = false;
+let DATA = null, TAB = "ibull", PAID = false;
 
-// ── Token check ───────────────────────────────────────────────────
 function checkAccess() {
   const p = new URLSearchParams(location.search);
   const t = p.get("token");
   if (!t) return false;
-  try {
-    const d = JSON.parse(atob(t));
-    return d.plan === "paid" && d.exp > Math.floor(Date.now()/1000);
-  } catch(e) { return false; }
+  try { const d = JSON.parse(atob(t)); return d.plan === "paid" && d.exp > Math.floor(Date.now()/1000); }
+  catch(e) { return false; }
 }
 
-// ── Fetch ─────────────────────────────────────────────────────────
 async function load() {
   try {
-    const res = await fetch(JSON_URL + "?_=" + Date.now());
+    const res = await fetch("./results.json?_=" + Date.now());
     if (!res.ok) throw new Error("HTTP " + res.status);
     DATA = await res.json();
-    document.getElementById("cnt-bull").textContent = DATA.bullish.length;
-    document.getElementById("cnt-bear").textContent = DATA.bearish.length;
-    document.getElementById("for-date").textContent = DATA.for_date || "—";
-    document.getElementById("updated").textContent  = "Updated: " + (DATA.generated_at || "—");
+
+    const ic = DATA.inside_cpr || {bullish:[], bearish:[]};
+    const nc = DATA.narrow_cpr || {bullish:[], bearish:[]};
+
+    document.getElementById("cnt-ibull").textContent = ic.bullish.length;
+    document.getElementById("cnt-ibear").textContent = ic.bearish.length;
+    document.getElementById("cnt-nbull").textContent = nc.bullish.length;
+    document.getElementById("cnt-nbear").textContent = nc.bearish.length;
+    document.getElementById("for-date").textContent  = DATA.for_date || "—";
+    document.getElementById("updated").textContent   = "Updated: " + (DATA.generated_at || "—");
     render();
   } catch(e) {
     document.getElementById("content").innerHTML =
-      `<div class="center"><div class="empty-msg">Could not load data</div>
-       <div class="empty-sub">${e.message}<br>Try again after 4:30 PM IST on trading days.</div></div>`;
+      `<div class="center"><b>Could not load data</b><br>${e.message}<br>Try after 5 PM IST on trading days.</div>`;
   }
 }
 
-// ── Tab ───────────────────────────────────────────────────────────
 function setTab(t) {
   TAB = t;
-  document.getElementById("tb-bull").className = "tab" + (t==="bull" ? " bull" : "");
-  document.getElementById("tb-bear").className = "tab" + (t==="bear" ? " bear" : "");
+  ["ibull","ibear","nbull","nbear"].forEach(id => {
+    const el = document.getElementById("tb-"+id);
+    el.className = "tab" + (id === t ? " t-"+id : "");
+  });
   if (DATA) render();
 }
 
-// ── Render ────────────────────────────────────────────────────────
 function render() {
-  const list = TAB === "bull" ? DATA.bullish : DATA.bearish;
-  const setupLabel = TAB === "bull" ? "BULLISH" : "BEARISH";
+  const ic = DATA.inside_cpr || {bullish:[], bearish:[]};
+  const nc = DATA.narrow_cpr || {bullish:[], bearish:[]};
 
-  // Update access chip
-  document.getElementById("chip").textContent  = PAID ? "PAID ACCESS" : "FREE PREVIEW";
-  document.getElementById("chip").className     = "access-chip " + (PAID ? "chip-paid" : "chip-free");
+  const map = {
+    ibull: { list: ic.bullish, label: "INSIDE CPR — BULLISH SETUPS", minScore: DATA.min_score_inside || 6, pool: "inside" },
+    ibear: { list: ic.bearish, label: "INSIDE CPR — BEARISH SETUPS", minScore: DATA.min_score_inside || 6, pool: "inside" },
+    nbull: { list: nc.bullish, label: "NARROW CPR <0.1% — BULLISH SETUPS", minScore: DATA.min_score_narrow || 7, pool: "narrow" },
+    nbear: { list: nc.bearish, label: "NARROW CPR <0.1% — BEARISH SETUPS", minScore: DATA.min_score_narrow || 7, pool: "narrow" },
+  };
+  const { list, label, minScore, pool } = map[TAB];
+
+  document.getElementById("chip").textContent = PAID ? "PAID ACCESS" : "FREE PREVIEW";
+  document.getElementById("chip").className   = "access-chip " + (PAID ? "chip-paid" : "chip-free");
 
   if (!list || list.length === 0) {
     document.getElementById("content").innerHTML =
-      `<div class="center">
-        <div class="empty-msg">No ${setupLabel.toLowerCase()} setups today</div>
-        <div class="empty-sub">No stocks met all 5 filter conditions for this session.</div>
-       </div>`;
+      `<div class="center"><b>No setups today</b><br>No stocks met the filter conditions for this session.</div>`;
     return;
   }
 
   let cards = "";
   list.forEach((r, i) => {
-    const locked = !PAID && i >= FREE_LIMIT;
-    const sym    = locked ? "XXXXXX" : r.sym;
-    const setup  = locked ? "------" : r.setup;
-    const score  = locked ? 0  : r.score;
-    const wPct   = locked ? "-.---%" : r.width_pct + "%";
-    const tvLink = locked ? "" : r.tv_link;
-    const sClass = score >= 8 ? "s-high" : "s-mid";
-    const txCls  = r.setup === "BULLISH" ? "bull-txt" : "bear-txt";
+    const locked  = !PAID && i >= FREE_LIMIT;
+    const sym     = locked ? "XXXXXX" : r.sym;
+    const score   = locked ? 0 : r.score;
+    const wPct    = locked ? "-.---%" : r.width_pct + "%";
+    const tvLink  = locked ? "" : r.tv_link;
+    const sClass  = score >= 8 ? "s-high" : "s-mid";
+    const txCls   = (TAB.includes("bull")) ? "bull-txt" : "bear-txt";
+    const setup   = locked ? "------" : (TAB.includes("bull") ? "BULLISH" : "BEARISH");
+    const ptag    = pool === "narrow" ? "NARROW" : "INSIDE";
+    const ptagCls = pool === "narrow" ? "tag-narrow" : "tag-inside";
 
     const dots = ["f1","f2","f3","f4","f5"].map(k => {
       const s = locked ? 0 : r[k];
@@ -341,28 +236,27 @@ function render() {
 
     cards += `
     <div class="card ${locked ? "card-locked" : ""}">
+      <span class="pool-tag ${ptagCls}">${ptag}</span>
       <span class="card-score ${sClass}">${score}/10</span>
-      <div class="card-sym">${sym}</div>
+      <div class="card-sym" style="margin-top:18px">${sym}</div>
       <div class="card-setup ${txCls}">${setup}</div>
       <div class="dots">${dots}<span class="dots-label">F1–F5</span></div>
-      <div class="width-tag">CPR width: ${wPct}</div>
+      <div class="width-tag">CPR: ${wPct}</div>
       ${tvLink ? `<a class="tv-link" href="${tvLink}" target="_blank">↗ View on TradingView</a>` : ""}
     </div>`;
   });
 
   let html = `<div class="grid-wrap">
-    <div class="section-label">${setupLabel} setups — score ≥ ${DATA.min_score || 6}</div>
+    <div class="section-label">${label} — score ≥ ${minScore}</div>
     <div class="stock-grid">${cards}</div>
   </div>`;
 
-  // Paywall
   if (!PAID && list.length > FREE_LIMIT) {
     const locked = list.length - FREE_LIMIT;
     html += `<div class="paywall">
       <div>
         <h2>Unlock Full Scanner Access</h2>
-        <p>You're seeing ${FREE_LIMIT} of ${list.length} ${setupLabel.toLowerCase()} setups.
-           Subscribe to access all ${locked} locked stocks plus daily watchlist.</p>
+        <p>You're seeing ${FREE_LIMIT} of ${list.length} setups. Subscribe to access all ${locked} locked stocks.</p>
       </div>
       <a class="paywall-btn" href="${SUBSCRIBE_URL}" target="_blank">Subscribe Now →</a>
     </div>`;
@@ -372,10 +266,9 @@ function render() {
 }
 
 function dotLabel(k) {
-  return {f1:"Inside+Narrow CPR",f2:"ATR Contraction",f3:"R1/S1 Room",f4:"Daily SMA",f5:"1H Bias"}[k];
+  return {f1:"CPR Type",f2:"ATR Squeeze",f3:"R1/S1 Room",f4:"5m SMA Compress",f5:"1H Bias"}[k];
 }
 
-// ── Init ──────────────────────────────────────────────────────────
 PAID = checkAccess();
 load();
 </script>
