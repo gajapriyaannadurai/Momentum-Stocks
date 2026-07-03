@@ -294,16 +294,19 @@ def score_stock(sym, tf, pool,
         ref_cpr_func = get_weekly_cpr_from_daily
         min_bars_htf = 50
         tf_label = "1H"
+        use_midpoint = False   # daily: strict price vs weekly TC/BC
     elif tf == "weekly":
         htf_df  = df_daily
         ref_cpr_func = get_monthly_cpr
         min_bars_htf = 50
         tf_label = "Daily"
+        use_midpoint = True    # weekly: price vs monthly CPR midpoint
     else:  # monthly
         htf_df  = df_weekly
         ref_cpr_func = get_quarterly_cpr
         min_bars_htf = 20
         tf_label = "Weekly"
+        use_midpoint = True    # monthly: price vs quarterly CPR midpoint
 
     if htf_df is not None and len(htf_df) >= min_bars_htf:
         hc    = htf_df["Close"]
@@ -314,10 +317,20 @@ def score_stock(sym, tf, pool,
         ref   = ref_cpr_func(df_daily)
         r_tc  = ref["upper"] if ref else None
         r_bc  = ref["lower"] if ref else None
+        r_mid = ((r_tc + r_bc) / 2) if (r_tc and r_bc) else None
 
         if h20 and h50:
-            abv_tc = r_tc and h_px >= r_tc
-            blw_bc = r_bc and h_px <= r_bc
+            # For midpoint mode: bullish = above midpoint, bearish = below
+            if use_midpoint and r_mid:
+                abv_tc = h_px >= r_mid
+                blw_bc = h_px < r_mid
+            else:
+                abv_tc = r_tc and h_px >= r_tc
+                blw_bc = r_bc and h_px <= r_bc
+
+            ref_val_str = f"mid {r_mid:.0f}" if use_midpoint and r_mid else \
+                          (f"TC {r_tc:.0f}" if r_tc else "N/A")
+
             full_bull = h200 and (h20 > h50 > h200)
             full_bear = h200 and (h20 < h50 < h200)
             part_bull = h20 > h50
@@ -325,18 +338,19 @@ def score_stock(sym, tf, pool,
 
             if h_px >= h20 and full_bull and abv_tc:
                 f5=2; htf="BULLISH"
-                f5_note=f"{tf_label} perfect bull + above ref TC {r_tc:.0f}"
+                f5_note=f"{tf_label} perfect bull + above {ref_val_str}"
             elif h_px >= h20 and part_bull and abv_tc:
                 f5=1; htf="BULLISH"
-                f5_note=f"{tf_label} good bull + above ref TC"
+                f5_note=f"{tf_label} good bull + above {ref_val_str}"
             elif h_px <= h20 and full_bear and blw_bc:
                 f5=2; htf="BEARISH"
-                f5_note=f"{tf_label} perfect bear + below ref BC {r_bc:.0f}"
+                f5_note=f"{tf_label} perfect bear + below {ref_val_str}"
             elif h_px <= h20 and part_bear and blw_bc:
                 f5=1; htf="BEARISH"
-                f5_note=f"{tf_label} good bear + below ref BC"
+                f5_note=f"{tf_label} good bear + below {ref_val_str}"
             else:
-                f5=0; htf="NEUTRAL"; f5_note=f"{tf_label} conditions not met"
+                f5=0; htf="NEUTRAL"
+                f5_note=f"{tf_label} px={h_px:.1f} vs {ref_val_str} | 20SMA={h20:.1f} 50SMA={h50:.1f}"
 
     score = f1 + f2 + f3 + f4 + f5
     setup = htf if htf in ("BULLISH","BEARISH") else "NEUTRAL"
@@ -377,6 +391,7 @@ def run_timeframe(tf, cpr_json, all_dfs, tickers):
 
     # ── Pool A: Inside CPR from cpr-bot ──────────────────────────
     inside_results = []
+    inside_debug   = []   # store all scores for debug
     if cpr_json and cpr_json.get("stocks"):
         pool_a_syms = [(s["sym"], s.get("cpr_upper"), s.get("cpr_lower"))
                        for s in cpr_json["stocks"]]
@@ -389,10 +404,24 @@ def run_timeframe(tf, cpr_json, all_dfs, tickers):
                                 get_df(df_5m,    sym, tickers),
                                 get_df(df_weekly,sym, tickers) if df_weekly is not None else None,
                                 ref_cpr_upper=cup, ref_cpr_lower=clo)
-                if r and r["score"] >= thresh["inside"]:
-                    inside_results.append(r)
+                if r:
+                    inside_debug.append(r)
+                    if r["score"] >= thresh["inside"]:
+                        inside_results.append(r)
             except Exception as ex:
                 print(f"[{tf}] {sym}: {ex}")
+
+        # Debug: print top 5 scores regardless of threshold
+        if not inside_results:
+            inside_debug.sort(key=lambda x: x["score"], reverse=True)
+            print(f"[{tf}] DEBUG — top scores from Pool A (none passed threshold {thresh['inside']}):")
+            for r in inside_debug[:5]:
+                print(f"  {r['sym']} score={r['score']} setup={r['setup']} "
+                      f"f1={r['filters']['f1']['score']} f2={r['filters']['f2']['score']} "
+                      f"f3={r['filters']['f3']['score']} f4={r['filters']['f4']['score']} "
+                      f"f5={r['filters']['f5']['score']}")
+                print(f"    f4: {r['filters']['f4']['note']}")
+                print(f"    f5: {r['filters']['f5']['note']}")
     inside_results.sort(key=lambda x: x["score"], reverse=True)
 
     # ── Pool B: Narrow CPR fresh scan ────────────────────────────
