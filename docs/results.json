@@ -1,135 +1,57 @@
 {
-  "generated_at": "2026-07-14 18:16 IST",
+  "generated_at": "2026-07-15 18:19 IST",
   "for_labels": {
-    "daily": "15-07-2026"
+    "daily": "16-07-2026"
   },
   "daily": {
-    "for": "15-07-2026",
+    "for": "16-07-2026",
     "inside_cpr": {
-      "bullish": [
+      "bullish": [],
+      "bearish": [
         {
-          "sym": "BHEL",
-          "setup": "BULLISH",
-          "score": 6,
-          "width_pct": 0.181,
+          "sym": "ITC",
+          "setup": "BEARISH",
+          "score": 7,
+          "width_pct": 0.036,
           "atr_ratio": null,
           "pool": "inside",
           "f1": 2,
-          "f1_note": "Inside+ Narrow (0.181%)",
+          "f1_note": "Inside+ Narrow (0.036%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 0,
-          "f3_note": "R1 gap 3.3 | S1 gap 4.0",
+          "f3_note": "R1 gap 1.2 | S1 gap 1.1",
           "f4": 2,
-          "f4_note": "5m tight 0.456%",
-          "f5": 1,
-          "f5_note": "1H good bull + above TC 391",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABHEL"
-        }
-      ],
-      "bearish": [
-        {
-          "sym": "ALKEM",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.134,
-          "atr_ratio": null,
-          "pool": "inside",
-          "f1": 2,
-          "f1_note": "Inside+ Narrow (0.134%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 1,
-          "f3_note": "R1 gap 74.8 | S1 gap 67.2",
-          "f4": 2,
-          "f4_note": "5m tight 0.296%",
-          "f5": 1,
-          "f5_note": "1H good bear + below TC 5657",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AALKEM"
+          "f4_note": "5m tight 0.410%",
+          "f5": 2,
+          "f5_note": "1H perfect bear + below TC 285",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AITC"
         }
       ]
     },
     "narrow_cpr": {
       "bullish": [
         {
-          "sym": "NMDC",
+          "sym": "AMBUJACEM",
           "setup": "BULLISH",
           "score": 7,
-          "width_pct": 0.082,
+          "width_pct": 0.046,
           "atr_ratio": null,
           "pool": "narrow",
           "f1": 2,
-          "f1_note": "Narrow CPR (0.082%)",
+          "f1_note": "Narrow CPR (0.046%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 1,
-          "f3_note": "R1 gap 1.1 | S1 gap 1.0",
-          "f4": 2,
-          "f4_note": "5m tight 0.468%",
-          "f5": 1,
-          "f5_note": "1H good bull + above TC 85",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ANMDC"
+          "f3_note": "R1 gap 4.9 | S1 gap 4.7",
+          "f4": 1,
+          "f4_note": "5m mild 0.837%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 435",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAMBUJACEM"
         }
       ],
-      "bearish": [
-        {
-          "sym": "TATASTEEL",
-          "setup": "BEARISH",
-          "score": 8,
-          "width_pct": 0.09,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.090%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 1,
-          "f3_note": "R1 gap 1.7 | S1 gap 1.8",
-          "f4": 2,
-          "f4_note": "5m tight 0.322%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 191",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATATASTEEL"
-        },
-        {
-          "sym": "IRB",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.066,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.066%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 0.1 | S1 gap 0.1",
-          "f4": 2,
-          "f4_note": "5m tight 0.323%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 21",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AIRB"
-        },
-        {
-          "sym": "SUNTV",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.044,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.044%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 1,
-          "f3_note": "R1 gap 5.7 | S1 gap 5.9",
-          "f4": 1,
-          "f4_note": "5m mild 0.780%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 505",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASUNTV"
-        }
-      ]
+      "bearish": []
     },
     "min_score_inside": 6,
     "min_score_narrow": 7
