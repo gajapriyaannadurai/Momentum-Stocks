@@ -1,57 +1,173 @@
 {
-  "generated_at": "2026-07-15 18:19 IST",
+  "generated_at": "2026-07-16 18:28 IST",
   "for_labels": {
-    "daily": "16-07-2026"
+    "daily": "17-07-2026"
   },
   "daily": {
-    "for": "16-07-2026",
+    "for": "17-07-2026",
     "inside_cpr": {
-      "bullish": [],
-      "bearish": [
+      "bullish": [
         {
-          "sym": "ITC",
-          "setup": "BEARISH",
+          "sym": "SBICARD",
+          "setup": "BULLISH",
           "score": 7,
-          "width_pct": 0.036,
+          "width_pct": 0.16,
           "atr_ratio": null,
           "pool": "inside",
           "f1": 2,
-          "f1_note": "Inside+ Narrow (0.036%)",
+          "f1_note": "Inside+ Narrow (0.160%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 1,
+          "f3_note": "R1 gap 10.0 | S1 gap 8.9",
+          "f4": 1,
+          "f4_note": "5m mild 0.574%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 607",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASBICARD"
+        }
+      ],
+      "bearish": [
+        {
+          "sym": "HEROMOTOCO",
+          "setup": "BEARISH",
+          "score": 7,
+          "width_pct": 0.047,
+          "atr_ratio": null,
+          "pool": "inside",
+          "f1": 2,
+          "f1_note": "Inside+ Narrow (0.047%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 0,
-          "f3_note": "R1 gap 1.2 | S1 gap 1.1",
+          "f3_note": "R1 gap 24.8 | S1 gap 27.1",
           "f4": 2,
-          "f4_note": "5m tight 0.410%",
+          "f4_note": "5m tight 0.355%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 285",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AITC"
+          "f5_note": "1H perfect bear + below TC 4941",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AHEROMOTOCO"
+        },
+        {
+          "sym": "BALKRISIND",
+          "setup": "BEARISH",
+          "score": 6,
+          "width_pct": 0.019,
+          "atr_ratio": null,
+          "pool": "inside",
+          "f1": 2,
+          "f1_note": "Inside+ Narrow (0.019%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap 20.0 | S1 gap 20.4",
+          "f4": 2,
+          "f4_note": "5m tight 0.288%",
+          "f5": 1,
+          "f5_note": "1H good bear + below TC 2240",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABALKRISIND"
         }
       ]
     },
     "narrow_cpr": {
       "bullish": [
         {
-          "sym": "AMBUJACEM",
+          "sym": "SUNPHARMA",
           "setup": "BULLISH",
           "score": 7,
-          "width_pct": 0.046,
+          "width_pct": 0.009,
           "atr_ratio": null,
           "pool": "narrow",
           "f1": 2,
-          "f1_note": "Narrow CPR (0.046%)",
+          "f1_note": "Narrow CPR (0.009%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap 7.2 | S1 gap 7.3",
+          "f4": 2,
+          "f4_note": "5m tight 0.058%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 1928",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASUNPHARMA"
+        },
+        {
+          "sym": "TITAN",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": 0.02,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (0.020%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 1,
-          "f3_note": "R1 gap 4.9 | S1 gap 4.7",
+          "f3_note": "R1 gap 44.4 | S1 gap 43.5",
           "f4": 1,
-          "f4_note": "5m mild 0.837%",
+          "f4_note": "5m mild 0.741%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 435",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAMBUJACEM"
+          "f5_note": "1H perfect bull + above TC 4578",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATITAN"
+        },
+        {
+          "sym": "BAJAJ-AUTO",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": 0.032,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (0.032%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap 55.2 | S1 gap 58.5",
+          "f4": 2,
+          "f4_note": "5m tight 0.337%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 10118",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABAJAJ-AUTO"
         }
       ],
-      "bearish": []
+      "bearish": [
+        {
+          "sym": "ASIANPAINT",
+          "setup": "BEARISH",
+          "score": 7,
+          "width_pct": 0.047,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (0.047%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap 15.2 | S1 gap 16.5",
+          "f4": 2,
+          "f4_note": "5m tight 0.247%",
+          "f5": 2,
+          "f5_note": "1H perfect bear + below TC 2706",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AASIANPAINT"
+        },
+        {
+          "sym": "IRB",
+          "setup": "BEARISH",
+          "score": 7,
+          "width_pct": 0.083,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (0.083%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap 0.1 | S1 gap 0.1",
+          "f4": 2,
+          "f4_note": "5m tight 0.292%",
+          "f5": 2,
+          "f5_note": "1H perfect bear + below TC 21",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AIRB"
+        }
+      ]
     },
     "min_score_inside": 6,
     "min_score_narrow": 7
