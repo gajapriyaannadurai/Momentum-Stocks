@@ -1,37 +1,92 @@
 {
-  "generated_at": "2026-08-28 02:34 IST",
+  "generated_at": "2026-08-29 02:58 IST",
   "for_labels": {
-    "daily": "27-08-2026",
-    "weekly": "24-Aug to 28-Aug-2026"
+    "daily": "28-08-2026"
   },
   "daily": {
-    "for": "27-08-2026",
+    "for": "28-08-2026",
     "inside_cpr": {
+      "bullish": [],
+      "bearish": []
+    },
+    "narrow_cpr": {
       "bullish": [
         {
-          "sym": "APOLLOTYRE",
+          "sym": "KOTAKBANK",
           "setup": "BULLISH",
-          "score": 6,
+          "score": 7,
           "width_pct": NaN,
           "atr_ratio": null,
-          "pool": "inside",
-          "f1": 1,
-          "f1_note": "Inside (nan%)",
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.232%",
+          "f4_note": "5m tight 0.485%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 438",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAPOLLOTYRE"
-        }
-      ],
-      "bearish": []
-    },
-    "narrow_cpr": {
-      "bullish": [
+          "f5_note": "1H perfect bull + above TC 401",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AKOTAKBANK"
+        },
+        {
+          "sym": "AXISBANK",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.278%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 1242",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAXISBANK"
+        },
+        {
+          "sym": "ADANIENT",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.259%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 3013",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AADANIENT"
+        },
+        {
+          "sym": "JSWSTEEL",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.435%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 1289",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AJSWSTEEL"
+        },
         {
           "sym": "SIEMENS",
           "setup": "BULLISH",
@@ -46,13 +101,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.007%",
+          "f4_note": "5m tight 0.065%",
           "f5": 2,
           "f5_note": "1H perfect bull + above TC 3932",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASIEMENS"
         },
         {
-          "sym": "EICHERMOT",
+          "sym": "BHEL",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -65,13 +120,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.378%",
+          "f4_note": "5m tight 0.401%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 8056",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AEICHERMOT"
+          "f5_note": "1H perfect bull + above TC 423",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABHEL"
         },
         {
-          "sym": "VEDL",
+          "sym": "HINDZINC",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -84,13 +139,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.281%",
+          "f4_note": "5m tight 0.456%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 276",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AVEDL"
+          "f5_note": "1H perfect bull + above TC 588",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AHINDZINC"
         },
         {
-          "sym": "BANKINDIA",
+          "sym": "JINDALSTEL",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -103,67 +158,10 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.394%",
+          "f4_note": "5m tight 0.209%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 143",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABANKINDIA"
-        },
-        {
-          "sym": "INDIANB",
-          "setup": "BULLISH",
-          "score": 7,
-          "width_pct": NaN,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (nan%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap nan | S1 gap nan",
-          "f4": 2,
-          "f4_note": "5m tight 0.316%",
-          "f5": 2,
-          "f5_note": "1H perfect bull + above TC 878",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AINDIANB"
-        },
-        {
-          "sym": "MAHABANK",
-          "setup": "BULLISH",
-          "score": 7,
-          "width_pct": NaN,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (nan%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap nan | S1 gap nan",
-          "f4": 2,
-          "f4_note": "5m tight 0.371%",
-          "f5": 2,
-          "f5_note": "1H perfect bull + above TC 81",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AMAHABANK"
-        },
-        {
-          "sym": "CDSL",
-          "setup": "BULLISH",
-          "score": 7,
-          "width_pct": NaN,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (nan%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap nan | S1 gap nan",
-          "f4": 2,
-          "f4_note": "5m tight 0.277%",
-          "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1380",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ACDSL"
+          "f5_note": "1H perfect bull + above TC 1124",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AJINDALSTEL"
         }
       ],
       "bearish": [
@@ -181,13 +179,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.375%",
+          "f4_note": "5m tight 0.231%",
           "f5": 2,
           "f5_note": "1H perfect bear + below TC 238",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AONGC"
         },
         {
-          "sym": "WIPRO",
+          "sym": "NTPC",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -200,13 +198,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.499%",
+          "f4_note": "5m tight 0.394%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 181",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AWIPRO"
+          "f5_note": "1H perfect bear + below TC 339",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ANTPC"
         },
         {
-          "sym": "INDUSINDBK",
+          "sym": "COALINDIA",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -219,13 +217,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.407%",
+          "f4_note": "5m tight 0.413%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 1008",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AINDUSINDBK"
+          "f5_note": "1H perfect bear + below TC 405",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ACOALINDIA"
         },
         {
-          "sym": "IRCTC",
+          "sym": "TRENT",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -238,10 +236,29 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.125%",
+          "f4_note": "5m tight 0.152%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 493",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AIRCTC"
+          "f5_note": "1H perfect bear + below TC 2952",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATRENT"
+        },
+        {
+          "sym": "BRITANNIA",
+          "setup": "BEARISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.392%",
+          "f5": 2,
+          "f5_note": "1H perfect bear + below TC 5465",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABRITANNIA"
         },
         {
           "sym": "MARICO",
@@ -257,13 +274,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.478%",
+          "f4_note": "5m tight 0.272%",
           "f5": 2,
           "f5_note": "1H perfect bear + below TC 854",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AMARICO"
         },
         {
-          "sym": "ALKEM",
+          "sym": "LUPIN",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -276,13 +293,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.146%",
+          "f4_note": "5m tight 0.288%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 5411",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AALKEM"
+          "f5_note": "1H perfect bear + below TC 2227",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ALUPIN"
         },
         {
-          "sym": "LINDEINDIA",
+          "sym": "IGL",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -295,13 +312,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.330%",
+          "f4_note": "5m tight 0.367%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 6723",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ALINDEINDIA"
+          "f5_note": "1H perfect bear + below TC 153",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AIGL"
         },
         {
-          "sym": "KPITTECH",
+          "sym": "NLCINDIA",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -314,13 +331,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.467%",
+          "f4_note": "5m tight 0.350%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 601",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AKPITTECH"
+          "f5_note": "1H perfect bear + below TC 271",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ANLCINDIA"
         },
         {
-          "sym": "JSL",
+          "sym": "FEDERALBNK",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -333,13 +350,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.262%",
+          "f4_note": "5m tight 0.407%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 728",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AJSL"
+          "f5_note": "1H perfect bear + below TC 360",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AFEDERALBNK"
         },
         {
-          "sym": "THERMAX",
+          "sym": "TATAINVEST",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -352,25 +369,12 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.203%",
+          "f4_note": "5m tight 0.411%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 4097",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATHERMAX"
+          "f5_note": "1H perfect bear + below TC 655",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATATAINVEST"
         }
       ]
-    },
-    "min_score_inside": 6,
-    "min_score_narrow": 7
-  },
-  "weekly": {
-    "for": "24-Aug to 28-Aug-2026",
-    "inside_cpr": {
-      "bullish": [],
-      "bearish": []
-    },
-    "narrow_cpr": {
-      "bullish": [],
-      "bearish": []
     },
     "min_score_inside": 6,
     "min_score_narrow": 7
