@@ -1,8 +1,7 @@
 {
-  "generated_at": "2026-09-11 20:37 IST",
+  "generated_at": "2026-09-14 22:29 IST",
   "for_labels": {
-    "daily": "14-09-2026",
-    "weekly": "14-Sep to 18-Sep-2026"
+    "daily": "14-09-2026"
   },
   "daily": {
     "for": "14-09-2026",
@@ -222,58 +221,6 @@
           "f5": 2,
           "f5_note": "1H perfect bear + below TC 1479",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AUNITDSPR"
-        }
-      ]
-    },
-    "min_score_inside": 6,
-    "min_score_narrow": 7
-  },
-  "weekly": {
-    "for": "14-Sep to 18-Sep-2026",
-    "inside_cpr": {
-      "bullish": [],
-      "bearish": []
-    },
-    "narrow_cpr": {
-      "bullish": [],
-      "bearish": [
-        {
-          "sym": "AXISBANK",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.072,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.072%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 16.6 | S1 gap 17.5",
-          "f4": 2,
-          "f4_note": "1H tight 0.802%",
-          "f5": 2,
-          "f5_note": "Daily perfect bear + below mid 1270",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAXISBANK"
-        },
-        {
-          "sym": "NTPC",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.065,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.065%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 4.4 | S1 gap 4.2",
-          "f4": 2,
-          "f4_note": "1H tight 1.094%",
-          "f5": 2,
-          "f5_note": "Daily perfect bear + below mid 334",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ANTPC"
         }
       ]
     },
