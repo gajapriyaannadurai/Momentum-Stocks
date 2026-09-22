@@ -1,152 +1,55 @@
 {
-  "generated_at": "2026-09-21 22:38 IST",
+  "generated_at": "2026-09-22 21:04 IST",
   "for_labels": {
-    "daily": "22-09-2026"
+    "daily": "23-09-2026"
   },
   "daily": {
-    "for": "22-09-2026",
+    "for": "23-09-2026",
     "inside_cpr": {
       "bullish": [
         {
-          "sym": "APOLLOHOSP",
+          "sym": "TORNTPHARM",
           "setup": "BULLISH",
-          "score": 7,
-          "width_pct": 0.086,
+          "score": 6,
+          "width_pct": 0.162,
           "atr_ratio": null,
           "pool": "inside",
           "f1": 2,
-          "f1_note": "Inside+ Narrow (0.086%)",
+          "f1_note": "Inside+ Narrow (0.162%)",
           "f2": 1,
           "f2_note": "limited ATR data",
-          "f3": 1,
-          "f3_note": "R1 gap 74.0 | S1 gap 66.3",
-          "f4": 1,
-          "f4_note": "5m mild 0.914%",
-          "f5": 2,
-          "f5_note": "1H perfect bull + above TC 8900",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAPOLLOHOSP"
+          "f3": 0,
+          "f3_note": "R1 gap 29.0 | S1 gap 37.0",
+          "f4": 2,
+          "f4_note": "5m tight 0.412%",
+          "f5": 1,
+          "f5_note": "1H good bull + above TC 4860",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATORNTPHARM"
         }
       ],
+      "bearish": []
+    },
+    "narrow_cpr": {
+      "bullish": [],
       "bearish": [
         {
           "sym": "ICICIBANK",
           "setup": "BEARISH",
           "score": 7,
-          "width_pct": 0.059,
+          "width_pct": 0.045,
           "atr_ratio": null,
-          "pool": "inside",
+          "pool": "narrow",
           "f1": 2,
-          "f1_note": "Inside+ Narrow (0.059%)",
+          "f1_note": "Narrow CPR (0.045%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 0,
-          "f3_note": "R1 gap 5.0 | S1 gap 5.8",
+          "f3_note": "R1 gap 6.1 | S1 gap 6.7",
           "f4": 2,
-          "f4_note": "5m tight 0.183%",
+          "f4_note": "5m tight 0.276%",
           "f5": 2,
           "f5_note": "1H perfect bear + below TC 1364",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AICICIBANK"
-        },
-        {
-          "sym": "M&M",
-          "setup": "BEARISH",
-          "score": 6,
-          "width_pct": 0.357,
-          "atr_ratio": null,
-          "pool": "inside",
-          "f1": 1,
-          "f1_note": "Inside (0.357%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 5.5 | S1 gap 16.3",
-          "f4": 2,
-          "f4_note": "5m tight 0.453%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 3079",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AM&M"
-        },
-        {
-          "sym": "MANAPPURAM",
-          "setup": "BEARISH",
-          "score": 6,
-          "width_pct": 0.381,
-          "atr_ratio": null,
-          "pool": "inside",
-          "f1": 1,
-          "f1_note": "Inside (0.381%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 1.9 | S1 gap 3.1",
-          "f4": 2,
-          "f4_note": "5m tight 0.370%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 320",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AMANAPPURAM"
-        }
-      ]
-    },
-    "narrow_cpr": {
-      "bullish": [
-        {
-          "sym": "DIVISLAB",
-          "setup": "BULLISH",
-          "score": 7,
-          "width_pct": 0.057,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.057%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 37.7 | S1 gap 43.0",
-          "f4": 2,
-          "f4_note": "5m tight 0.422%",
-          "f5": 2,
-          "f5_note": "1H perfect bull + above TC 9311",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ADIVISLAB"
-        }
-      ],
-      "bearish": [
-        {
-          "sym": "WIPRO",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.053,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.053%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 1.1 | S1 gap 1.0",
-          "f4": 2,
-          "f4_note": "5m tight 0.281%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 168",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AWIPRO"
-        },
-        {
-          "sym": "FEDERALBNK",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.015,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.015%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 1,
-          "f3_note": "R1 gap 3.2 | S1 gap 3.3",
-          "f4": 1,
-          "f4_note": "5m mild 0.635%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 336",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AFEDERALBNK"
         }
       ]
     },
