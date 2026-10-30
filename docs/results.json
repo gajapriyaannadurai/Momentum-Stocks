@@ -1,115 +1,105 @@
 {
-  "generated_at": "2026-10-29 22:59 IST",
+  "generated_at": "2026-10-30 22:34 IST",
   "for_labels": {
-    "daily": "30-10-2026"
+    "daily": "02-11-2026",
+    "weekly": "02-Nov to 06-Nov-2026",
+    "monthly": "November 2026"
   },
   "daily": {
-    "for": "30-10-2026",
+    "for": "02-11-2026",
     "inside_cpr": {
+      "bullish": [
+        {
+          "sym": "ADANIPORTS",
+          "setup": "BULLISH",
+          "score": 6,
+          "width_pct": 0.265,
+          "atr_ratio": null,
+          "pool": "inside",
+          "f1": 2,
+          "f1_note": "Inside+ Narrow (0.265%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 1,
+          "f3_note": "R1 gap 29.0 | S1 gap 24.1",
+          "f4": 0,
+          "f4_note": "5m spread 1.211%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 1736",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AADANIPORTS"
+        }
+      ],
+      "bearish": []
+    },
+    "narrow_cpr": {
       "bullish": [],
       "bearish": [
         {
           "sym": "COALINDIA",
           "setup": "BEARISH",
           "score": 7,
-          "width_pct": 0.02,
+          "width_pct": 0.039,
           "atr_ratio": null,
-          "pool": "inside",
+          "pool": "narrow",
           "f1": 2,
-          "f1_note": "Inside+ Narrow (0.020%)",
+          "f1_note": "Narrow CPR (0.039%)",
           "f2": 1,
           "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 4.5 | S1 gap 4.4",
-          "f4": 2,
-          "f4_note": "5m tight 0.469%",
+          "f3": 1,
+          "f3_note": "R1 gap 8.7 | S1 gap 8.8",
+          "f4": 1,
+          "f4_note": "5m mild 0.944%",
           "f5": 2,
           "f5_note": "1H perfect bear + below TC 405",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ACOALINDIA"
-        },
+        }
+      ]
+    },
+    "min_score_inside": 6,
+    "min_score_narrow": 7
+  },
+  "weekly": {
+    "for": "02-Nov to 06-Nov-2026",
+    "inside_cpr": {
+      "bullish": [],
+      "bearish": [
         {
-          "sym": "RELIANCE",
+          "sym": "CANBK",
           "setup": "BEARISH",
           "score": 6,
-          "width_pct": 0.083,
+          "width_pct": 0.162,
           "atr_ratio": null,
           "pool": "inside",
           "f1": 2,
-          "f1_note": "Inside+ Narrow (0.083%)",
+          "f1_note": "Inside+ Narrow (0.162%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 0,
-          "f3_note": "R1 gap 12.3 | S1 gap 13.2",
+          "f3_note": "R1 gap 1.7 | S1 gap 0.5",
           "f4": 1,
-          "f4_note": "5m mild 0.720%",
+          "f4_note": "1H mild 1.847%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 1199",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ARELIANCE"
+          "f5_note": "Daily perfect bear + below mid 122",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ACANBK"
         }
       ]
     },
     "narrow_cpr": {
-      "bullish": [
-        {
-          "sym": "INDHOTEL",
-          "setup": "BULLISH",
-          "score": 7,
-          "width_pct": 0.014,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.014%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 6.1 | S1 gap 6.2",
-          "f4": 2,
-          "f4_note": "5m tight 0.053%",
-          "f5": 2,
-          "f5_note": "1H perfect bull + above TC 778",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AINDHOTEL"
-        }
-      ],
-      "bearish": [
-        {
-          "sym": "SUPREMEIND",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.06,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.060%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap 25.2 | S1 gap 27.1",
-          "f4": 2,
-          "f4_note": "5m tight 0.279%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 3506",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASUPREMEIND"
-        },
-        {
-          "sym": "HONAUT",
-          "setup": "BEARISH",
-          "score": 7,
-          "width_pct": 0.082,
-          "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (0.082%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 1,
-          "f3_note": "R1 gap 437.5 | S1 gap 412.5",
-          "f4": 1,
-          "f4_note": "5m mild 0.779%",
-          "f5": 2,
-          "f5_note": "1H perfect bear + below TC 31437",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AHONAUT"
-        }
-      ]
+      "bullish": [],
+      "bearish": []
+    },
+    "min_score_inside": 6,
+    "min_score_narrow": 7
+  },
+  "monthly": {
+    "for": "November 2026",
+    "inside_cpr": {
+      "bullish": [],
+      "bearish": []
+    },
+    "narrow_cpr": {
+      "bullish": [],
+      "bearish": []
     },
     "min_score_inside": 6,
     "min_score_narrow": 7
