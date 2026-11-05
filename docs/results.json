@@ -1,38 +1,19 @@
 {
-  "generated_at": "2026-11-05 00:14 IST",
+  "generated_at": "2026-11-06 00:22 IST",
   "for_labels": {
-    "daily": "06-11-2026"
+    "daily": "06-11-2026",
+    "weekly": "02-Nov to 06-Nov-2026"
   },
   "daily": {
     "for": "06-11-2026",
     "inside_cpr": {
-      "bullish": [
-        {
-          "sym": "DIVISLAB",
-          "setup": "BULLISH",
-          "score": 6,
-          "width_pct": NaN,
-          "atr_ratio": null,
-          "pool": "inside",
-          "f1": 1,
-          "f1_note": "Inside (nan%)",
-          "f2": 1,
-          "f2_note": "limited ATR data",
-          "f3": 0,
-          "f3_note": "R1 gap nan | S1 gap nan",
-          "f4": 2,
-          "f4_note": "5m tight 0.477%",
-          "f5": 2,
-          "f5_note": "1H perfect bull + above TC 9641",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ADIVISLAB"
-        }
-      ],
+      "bullish": [],
       "bearish": []
     },
     "narrow_cpr": {
       "bullish": [
         {
-          "sym": "LT",
+          "sym": "BHARTIARTL",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -45,13 +26,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.111%",
+          "f4_note": "5m tight 0.395%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 3833",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ALT"
+          "f5_note": "1H perfect bull + above TC 1959",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABHARTIARTL"
         },
         {
-          "sym": "KOTAKBANK",
+          "sym": "TRENT",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -64,13 +45,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.231%",
+          "f4_note": "5m tight 0.491%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 458",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AKOTAKBANK"
+          "f5_note": "1H perfect bull + above TC 2970",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATRENT"
         },
         {
-          "sym": "BANKBARODA",
+          "sym": "CIPLA",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -83,13 +64,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.225%",
+          "f4_note": "5m tight 0.368%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 237",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABANKBARODA"
+          "f5_note": "1H perfect bull + above TC 1369",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ACIPLA"
         },
         {
-          "sym": "TATACOMM",
+          "sym": "DRREDDY",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -102,12 +83,63 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.153%",
+          "f4_note": "5m tight 0.094%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1688",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATATACOMM"
+          "f5_note": "1H perfect bull + above TC 1333",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ADRREDDY"
+        },
+        {
+          "sym": "LTTS",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.308%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 4217",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ALTTS"
+        },
+        {
+          "sym": "GLAND",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.327%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 3048",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AGLAND"
         }
       ],
+      "bearish": []
+    },
+    "min_score_inside": 6,
+    "min_score_narrow": 7
+  },
+  "weekly": {
+    "for": "02-Nov to 06-Nov-2026",
+    "inside_cpr": {
+      "bullish": [],
+      "bearish": []
+    },
+    "narrow_cpr": {
+      "bullish": [],
       "bearish": []
     },
     "min_score_inside": 6,
