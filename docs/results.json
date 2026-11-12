@@ -1,14 +1,15 @@
 {
-  "generated_at": "2026-11-12 00:18 IST",
+  "generated_at": "2026-11-13 00:30 IST",
   "for_labels": {
-    "daily": "12-11-2026"
+    "daily": "13-11-2026",
+    "weekly": "09-Nov to 13-Nov-2026"
   },
   "daily": {
-    "for": "12-11-2026",
+    "for": "13-11-2026",
     "inside_cpr": {
       "bullish": [
         {
-          "sym": "NYKAA",
+          "sym": "JIOFIN",
           "setup": "BULLISH",
           "score": 6,
           "width_pct": NaN,
@@ -21,13 +22,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.365%",
+          "f4_note": "5m tight 0.137%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 353",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ANYKAA"
+          "f5_note": "1H perfect bull + above TC 227",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AJIOFIN"
         },
         {
-          "sym": "AUROPHARMA",
+          "sym": "ACC",
           "setup": "BULLISH",
           "score": 6,
           "width_pct": NaN,
@@ -40,10 +41,10 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.329%",
+          "f4_note": "5m tight 0.175%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1777",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAUROPHARMA"
+          "f5_note": "1H perfect bull + above TC 1219",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AACC"
         },
         {
           "sym": "LUPIN",
@@ -59,13 +60,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.441%",
+          "f4_note": "5m tight 0.012%",
           "f5": 2,
           "f5_note": "1H perfect bull + above TC 2003",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ALUPIN"
         },
         {
-          "sym": "LODHA",
+          "sym": "DRREDDY",
           "setup": "BULLISH",
           "score": 6,
           "width_pct": NaN,
@@ -78,56 +79,95 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.383%",
+          "f4_note": "5m tight 0.163%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1147",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ALODHA"
-        }
-      ],
-      "bearish": []
-    },
-    "narrow_cpr": {
-      "bullish": [
+          "f5_note": "1H perfect bull + above TC 1369",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ADRREDDY"
+        },
         {
           "sym": "ICICIBANK",
           "setup": "BULLISH",
-          "score": 7,
+          "score": 6,
           "width_pct": NaN,
           "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (nan%)",
+          "pool": "inside",
+          "f1": 1,
+          "f1_note": "Inside (nan%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.492%",
+          "f4_note": "5m tight 0.208%",
           "f5": 2,
           "f5_note": "1H perfect bull + above TC 1539",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AICICIBANK"
         },
         {
-          "sym": "BAJFINANCE",
+          "sym": "TRENT",
           "setup": "BULLISH",
-          "score": 7,
+          "score": 6,
           "width_pct": NaN,
           "atr_ratio": null,
-          "pool": "narrow",
-          "f1": 2,
-          "f1_note": "Narrow CPR (nan%)",
+          "pool": "inside",
+          "f1": 1,
+          "f1_note": "Inside (nan%)",
           "f2": 1,
           "f2_note": "limited ATR data",
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.352%",
+          "f4_note": "5m tight 0.386%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1063",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABAJFINANCE"
+          "f5_note": "1H perfect bull + above TC 3073",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATRENT"
         },
         {
-          "sym": "SUNPHARMA",
+          "sym": "MOTHERSON",
+          "setup": "BULLISH",
+          "score": 6,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "inside",
+          "f1": 1,
+          "f1_note": "Inside (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.462%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 161",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AMOTHERSON"
+        }
+      ],
+      "bearish": [
+        {
+          "sym": "OIL",
+          "setup": "BEARISH",
+          "score": 6,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "inside",
+          "f1": 1,
+          "f1_note": "Inside (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.392%",
+          "f5": 2,
+          "f5_note": "1H perfect bear + below TC 446",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AOIL"
+        }
+      ]
+    },
+    "narrow_cpr": {
+      "bullish": [
+        {
+          "sym": "RELIANCE",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -140,10 +180,67 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.206%",
+          "f4_note": "5m tight 0.287%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1838",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASUNPHARMA"
+          "f5_note": "1H perfect bull + above TC 1303",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ARELIANCE"
+        },
+        {
+          "sym": "BHARTIARTL",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.307%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 2088",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABHARTIARTL"
+        },
+        {
+          "sym": "LICI",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.371%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 401",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ALICI"
+        },
+        {
+          "sym": "ADANIENT",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.204%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 2724",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AADANIENT"
         },
         {
           "sym": "ULTRACEMCO",
@@ -159,13 +256,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.476%",
+          "f4_note": "5m tight 0.038%",
           "f5": 2,
           "f5_note": "1H perfect bull + above TC 12217",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AULTRACEMCO"
         },
         {
-          "sym": "WIPRO",
+          "sym": "ASIANPAINT",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -178,13 +275,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.208%",
+          "f4_note": "5m tight 0.229%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 198",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AWIPRO"
+          "f5_note": "1H perfect bull + above TC 2514",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AASIANPAINT"
         },
         {
-          "sym": "BAJAJFINSV",
+          "sym": "M&M",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -197,10 +294,10 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.320%",
+          "f4_note": "5m tight 0.298%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1832",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABAJAJFINSV"
+          "f5_note": "1H perfect bull + above TC 3215",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AM&M"
         },
         {
           "sym": "JSWSTEEL",
@@ -216,10 +313,29 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.317%",
+          "f4_note": "5m tight 0.121%",
           "f5": 2,
           "f5_note": "1H perfect bull + above TC 1341",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AJSWSTEEL"
+        },
+        {
+          "sym": "ADANIPOWER",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.291%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 202",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AADANIPOWER"
         },
         {
           "sym": "PIDILITIND",
@@ -235,13 +351,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.210%",
+          "f4_note": "5m tight 0.135%",
           "f5": 2,
           "f5_note": "1H perfect bull + above TC 1558",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3APIDILITIND"
         },
         {
-          "sym": "CIPLA",
+          "sym": "VBL",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -254,10 +370,10 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.378%",
+          "f4_note": "5m tight 0.296%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1403",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ACIPLA"
+          "f5_note": "1H perfect bull + above TC 431",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AVBL"
         },
         {
           "sym": "APOLLOHOSP",
@@ -273,13 +389,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.320%",
+          "f4_note": "5m tight 0.137%",
           "f5": 2,
           "f5_note": "1H perfect bull + above TC 8474",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAPOLLOHOSP"
         },
         {
-          "sym": "DRREDDY",
+          "sym": "IRFC",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -292,13 +408,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.037%",
+          "f4_note": "5m tight 0.134%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1369",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ADRREDDY"
+          "f5_note": "1H perfect bull + above TC 79",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AIRFC"
         },
         {
-          "sym": "TORNTPHARM",
+          "sym": "DIVISLAB",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -311,13 +427,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.046%",
+          "f4_note": "5m tight 0.401%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 4724",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ATORNTPHARM"
+          "f5_note": "1H perfect bull + above TC 10244",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ADIVISLAB"
         },
         {
-          "sym": "BOSCHLTD",
+          "sym": "GAIL",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -330,13 +446,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.244%",
+          "f4_note": "5m tight 0.197%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 50435",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABOSCHLTD"
+          "f5_note": "1H perfect bull + above TC 183",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AGAIL"
         },
         {
-          "sym": "MUTHOOTFIN",
+          "sym": "IRCTC",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -349,13 +465,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.363%",
+          "f4_note": "5m tight 0.164%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 2776",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AMUTHOOTFIN"
+          "f5_note": "1H perfect bull + above TC 456",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AIRCTC"
         },
         {
-          "sym": "MAXHEALTH",
+          "sym": "SRF",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -368,10 +484,48 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.045%",
+          "f4_note": "5m tight 0.068%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 924",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AMAXHEALTH"
+          "f5_note": "1H perfect bull + above TC 2448",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASRF"
+        },
+        {
+          "sym": "SBICARD",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.406%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 576",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ASBICARD"
+        },
+        {
+          "sym": "UNITDSPR",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.379%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 1406",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AUNITDSPR"
         },
         {
           "sym": "BIOCON",
@@ -387,13 +541,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.491%",
+          "f4_note": "5m tight 0.456%",
           "f5": 2,
           "f5_note": "1H perfect bull + above TC 361",
           "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ABIOCON"
         },
         {
-          "sym": "PAYTM",
+          "sym": "HUDCO",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -406,13 +560,13 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.314%",
+          "f4_note": "5m tight 0.441%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1769",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3APAYTM"
+          "f5_note": "1H perfect bull + above TC 158",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AHUDCO"
         },
         {
-          "sym": "GODREJPROP",
+          "sym": "ENDURANCE",
           "setup": "BULLISH",
           "score": 7,
           "width_pct": NaN,
@@ -425,15 +579,72 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.339%",
+          "f4_note": "5m tight 0.347%",
           "f5": 2,
-          "f5_note": "1H perfect bull + above TC 1773",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AGODREJPROP"
+          "f5_note": "1H perfect bull + above TC 2478",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AENDURANCE"
+        },
+        {
+          "sym": "LINDEINDIA",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.310%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 6692",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3ALINDEINDIA"
+        },
+        {
+          "sym": "GLAND",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.364%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 3153",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AGLAND"
+        },
+        {
+          "sym": "APOLLOTYRE",
+          "setup": "BULLISH",
+          "score": 7,
+          "width_pct": NaN,
+          "atr_ratio": null,
+          "pool": "narrow",
+          "f1": 2,
+          "f1_note": "Narrow CPR (nan%)",
+          "f2": 1,
+          "f2_note": "limited ATR data",
+          "f3": 0,
+          "f3_note": "R1 gap nan | S1 gap nan",
+          "f4": 2,
+          "f4_note": "5m tight 0.145%",
+          "f5": 2,
+          "f5_note": "1H perfect bull + above TC 414",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AAPOLLOTYRE"
         }
       ],
       "bearish": [
         {
-          "sym": "ESCORTS",
+          "sym": "ASTRAL",
           "setup": "BEARISH",
           "score": 7,
           "width_pct": NaN,
@@ -446,12 +657,25 @@
           "f3": 0,
           "f3_note": "R1 gap nan | S1 gap nan",
           "f4": 2,
-          "f4_note": "5m tight 0.391%",
+          "f4_note": "5m tight 0.438%",
           "f5": 2,
-          "f5_note": "1H perfect bear + below TC 2496",
-          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AESCORTS"
+          "f5_note": "1H perfect bear + below TC 1327",
+          "tv_link": "https://www.tradingview.com/chart/?symbol=NSE%3AASTRAL"
         }
       ]
+    },
+    "min_score_inside": 6,
+    "min_score_narrow": 7
+  },
+  "weekly": {
+    "for": "09-Nov to 13-Nov-2026",
+    "inside_cpr": {
+      "bullish": [],
+      "bearish": []
+    },
+    "narrow_cpr": {
+      "bullish": [],
+      "bearish": []
     },
     "min_score_inside": 6,
     "min_score_narrow": 7
